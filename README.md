@@ -19,7 +19,7 @@ Les formes sont remplies et donc, n'affichent que leurs contours. Une couleur un
 
 ## Notions exploitées
 
-####Programmation orientée objet:
+### Programmation orientée objet:
 
 ⦁	concepts de classe, de sous-classe, de l'héritage <br />
 ⦁	utilisation des méthodes pour faire interagir des objets <br />
