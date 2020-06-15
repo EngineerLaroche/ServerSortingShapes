@@ -27,15 +27,15 @@ Les formes sont remplies et donc, n'affichent que leurs contours. Une couleur un
 ⦁	rédiger et faire compiler un fichier .java source <br />
 ⦁	exécuter une application Java <br />
 
-####Client-serveur:
+### Client-serveur:
 
 ⦁	notion de socket en TCP/IP, ouverture, lecture, écriture, fermeture
 
-####Contexte graphique:
+### Contexte graphique:
 
 ⦁	afficher/effacer une forme dans une fenêtre
 
-####Méthodes pour décortiquer une ligne de commande textuelle:
+### Méthodes pour décortiquer une ligne de commande textuelle:
 
 ⦁	Integer.parseInt, String.split, java.util.regex, etc.
 
