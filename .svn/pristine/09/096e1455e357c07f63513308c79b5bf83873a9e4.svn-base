@@ -1,0 +1,67 @@
+
+public class AlgorithmeTriAire {
+	
+	private static final int MAX_FORMES = 10;
+
+	public AlgorithmeTriAire(Maillon premierNoeud, String ordreTri) {
+
+		Maillon chaine = premierNoeud;
+		Maillon suivant, xEchange = null;		
+
+		while(chaine.getProchain() != null){
+
+			AbstraitesFormes formesAbstraites = chaine.getForme(); 
+			AbstraitesFormes formesSuivantes = chaine.getProchain().getForme();
+
+			suivant = premierNoeud.getProchain(); 
+
+			if(ordreTri.equals("Croissant")){
+				
+				// chercher la place du noeud dans la liste 
+				for(formesAbstraites = chaine.getForme(); formesSuivantes == null; formesAbstraites = chaine.getProchain().getForme()) {
+
+					if(formesSuivantes.aireForme() > formesAbstraites.aireForme()){
+
+						//Mauvais maillon !!!!!!!!
+						
+						xEchange = maillon(formesSuivantes,suivant);
+						suivant = maillon(formesAbstraites,chaine);   
+						chaine = xEchange; 
+					}
+				}
+				chaine = premierNoeud;
+
+				for(int i = 0; i < MAX_FORMES; i++){
+
+					System.out.println(chaine.getForme().aireForme());
+					chaine = chaine.getProchain();
+				}
+
+			} else {
+
+				for(formesAbstraites = chaine.getForme(); formesSuivantes == null; formesAbstraites = chaine.getProchain().getForme()) {
+
+					if (formesSuivantes.aireForme() < formesAbstraites.aireForme()){
+
+						xEchange = maillon(formesAbstraites,chaine);
+						chaine = maillon(formesSuivantes,suivant);   
+						suivant = xEchange; 
+					} 
+				}
+				chaine = premierNoeud;
+
+				for(int i = 0; i < MAX_FORMES; i++){
+					
+					System.out.println(chaine.getForme().aireForme());
+					chaine = chaine.getProchain();
+				}
+			}
+		}
+	}
+	
+	private static Maillon maillon(AbstraitesFormes checknext, Maillon suivant) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

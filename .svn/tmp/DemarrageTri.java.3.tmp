@@ -1,0 +1,426 @@
+/*******************************************************************
+ * @Titre_Classe: DEMARRER TRI
+ * 
+ * @Resumer: 
+ * Identification du type de tri choisi par l'utilisateur.
+ * Selon le type de tri, on peut choisir en ordre croissant ou decroissant.
+ * Utilisatuion du Switch Case pour faciliter la repartition de la demande.
+ * On tri les formes a partir d'un algorithme (processus de comparaison). 
+ * 
+ * @Auteur: Alexandre Laroche et Tomy Nguyen
+ * @Date: 24 juin 2017 
+ * 
+ *******************************************************************/ 
+public class DemarrageTri {
+
+	/********************
+	 * Constantes
+	 ********************/
+	
+	private static final String 
+	CROISSANT = "Croissant", 
+	DECROISSANT = "Decroissant";
+
+	private static final String 
+	SEQ_CROISSANT = "Numero_Sequence_C", 
+	SEQ_DECROISSANT = "Numero_Sequence_D",
+	AIRE_CROISSANT = "Aire_Forme_C", 
+	AIRE_DECROISSANT = "Aire_Forme_D", 
+	FORME_CROISSANT = "Type_Forme_C",
+	FORME_DECROISSANT = "Type_Forme_D", 
+	ORDRE_DISTANCE = "Distance_Forme_C";
+
+	/********************
+	 * Variable
+	 ********************/
+	
+	static int numero = 0;
+	
+	/*******************************************************************
+	 * @Titre: SELECTION TYPE TRI
+	 * 
+	 * @Resumer:
+	 * Utilisation du Switch Case pour identifier la methode de tri et 
+	 * l'ordre choisi par l'utilisateur. 
+	 * Recoit la ListeChaine qui contient des formes a trier.
+	 *
+	 *******************************************************************/
+	public static void trier(ListeChaine<FormesAbstraites> listeFormes, String selectionTri) {
+
+		switch (selectionTri) {
+
+		case SEQ_CROISSANT:
+
+			triSequence(listeFormes, CROISSANT);
+			break;
+
+		case SEQ_DECROISSANT:
+
+			triSequence(listeFormes, DECROISSANT);
+			break;
+
+		case AIRE_CROISSANT:
+
+			triAire(listeFormes, CROISSANT);
+			break;
+
+		case AIRE_DECROISSANT:
+
+			triAire(listeFormes, DECROISSANT);
+			break;
+
+		case FORME_CROISSANT:
+			
+			triForme(listeFormes, CROISSANT);
+			break;
+
+		case FORME_DECROISSANT:
+
+			triForme(listeFormes, DECROISSANT);
+			break;
+
+		case ORDRE_DISTANCE:
+
+			triDistance(listeFormes, CROISSANT);
+			break;
+		}
+
+	}
+
+	/*******************************************************************
+	 * @Titre: TRI AIRE
+	 * 
+	 * @Resumer:
+	 * On tri les formes selon la demande par ordre croissant ou decroissant.
+	 * Processus de comparaison pour trier les formes.
+	 * Algorithme supporte par la classe ListeChaine et par la classe Noeud.
+	 * 
+	 * @Source:
+	 * Inspiration tri:			http://www.sanfoundry.com/java-program-implement-merge-sort-algorithm-linked-list/
+	 * Inspiration deplacer: 	https://stackoverflow.com/questions/16410587/insertion-sort-using-linked-integer-nodes
+	 * inspiration Comparer:	https://codereview.stackexchange.com/questions/8521/insert-sort-on-a-linked-list
+	 * 
+	 *******************************************************************/
+	private static void triAire(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		boolean trouve = false;
+		int elementsTrie = 0;
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par la fin
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					double aire1 = liste.getElement(i).aireForme();
+					double aire2 = liste.getElement(j).aireForme();
+					
+					if (aire1 < aire2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		} else if (ordreTri.equals(DECROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par le debut
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					double aire1 = liste.getElement(i).aireForme();
+					double aire2 = liste.getElement(j).aireForme();
+					
+					if (aire1 > aire2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		}
+		for (int i = 0; i < liste.getSize(); i++) {
+			System.out.println(liste.getElement(i).aireForme());
+		}
+
+	}
+
+	/*******************************************************************
+	 * @Titre: TRI DISTANCE
+	 * 
+	 * @Resumer:
+	 * On tri les formes selon la demande par ordre croissant ou decroissant.
+	 * Processus de comparaison pour trier les formes.
+	 * Algorithme supporte par la classe ListeChaine et par la classe Noeud.
+	 * 
+	 * @Source:
+	 * Inspiration tri:			http://www.sanfoundry.com/java-program-implement-merge-sort-algorithm-linked-list/
+	 * Inspiration deplacer: 	https://stackoverflow.com/questions/16410587/insertion-sort-using-linked-integer-nodes
+	 * inspiration Comparer:	https://codereview.stackexchange.com/questions/8521/insert-sort-on-a-linked-list
+	 * 
+	 *******************************************************************/
+	private static void triDistance(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		boolean trouve = false;
+		int elementsTrie = 0;
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par la fin
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					double dist1 = liste.getElement(i).distanceForme();
+					double dist2 = liste.getElement(j).distanceForme();
+					
+					if (dist1 < dist2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		} else if (ordreTri.equals(DECROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par le debut
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					double dist1 = liste.getElement(i).distanceForme();
+					double dist2 = liste.getElement(j).distanceForme();
+					
+					if (dist1 > dist2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		}
+		for (int i = 0; i < liste.getSize(); i++) {
+			System.out.println(liste.getElement(i).distanceForme());
+		}
+	}
+
+	/*******************************************************************
+	 * @Titre: TRI TYPE FORME
+	 * 
+	 * @Resumer:
+	 * On tri les formes selon la demande par ordre croissant ou decroissant.
+	 * Processus de comparaison pour trier les formes.
+	 * Algorithme supporte par la classe ListeChaine et par la classe Noeud.
+	 * 
+	 * @Source:
+	 * Inspiration tri:			http://www.sanfoundry.com/java-program-implement-merge-sort-algorithm-linked-list/
+	 * Inspiration deplacer: 	https://stackoverflow.com/questions/16410587/insertion-sort-using-linked-integer-nodes
+	 * inspiration Comparer:	https://codereview.stackexchange.com/questions/8521/insert-sort-on-a-linked-list
+	 * 
+	 *******************************************************************/
+	private static void triForme(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		boolean trouve = false;
+		int elementsTrie = 0;
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par la fin
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					int num1 = liste.getElement(i).getNumeroTri();
+					int num2 = liste.getElement(j).getNumeroTri();
+					
+					if (num1 < num2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		} else if (ordreTri.equals(DECROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par le debut
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					int num1 = liste.getElement(i).getNumeroTri();
+					int num2 = liste.getElement(j).getNumeroTri();
+					
+					if (num1 > num2) {
+						
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+					
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		}
+		for (int i = 0; i < liste.getSize(); i++) {
+			System.out.println(liste.getElement(i).getNumeroTri());
+		}
+	}
+
+	/*******************************************************************
+	 * @Titre: TRI NUMERO SEQUENCE
+	 * 
+	 * @Resumer:
+	 * On tri les formes selon la demande par ordre croissant ou decroissant.
+	 * Processus de comparaison pour trier les formes.
+	 * Algorithme supporte par la classe ListeChaine et par la classe Noeud.
+	 * 
+	 * @Source:
+	 * Inspiration tri:			http://www.sanfoundry.com/java-program-implement-merge-sort-algorithm-linked-list/
+	 * Inspiration deplacer: 	https://stackoverflow.com/questions/16410587/insertion-sort-using-linked-integer-nodes
+	 * inspiration Comparer:	https://codereview.stackexchange.com/questions/8521/insert-sort-on-a-linked-list
+	 * 
+	 *******************************************************************/
+	private static void triSequence(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+		
+		boolean trouve = false;
+		int elementsTrie = 0;
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par la fin
+				for (int j = 0; j <= elementsTrie; j++) {
+					
+					int numSeq1 = liste.getElement(i).getNumeroSeq();
+					int numSeq2 = liste.getElement(j).getNumeroSeq();
+
+					if (numSeq1 < numSeq2) {
+
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		} else if (ordreTri.equals(DECROISSANT)) {
+			// Le premier element est deja trier
+			for (int i = 1; i < liste.getSize(); i++) {
+				// On compare les elements non-trier aux elements deja trier
+				// On commence par le debut
+				for (int j = 0; j <= elementsTrie; j++) {
+
+					int numSeq1 = liste.getElement(i).getNumeroSeq();
+					int numSeq2 = liste.getElement(j).getNumeroSeq();
+
+					if (numSeq1 > numSeq2) {
+
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				// Si on ne trouve pas d'element plus petit, alors l'element
+				// non-trier est plus petit que tous les elements deja trier
+				if (!trouve) {
+
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		}
+		for (int i = 0; i < liste.getSize(); i++) {
+			System.out.println(liste.getElement(i).getNumeroSeq());
+		}
+	}		
+}

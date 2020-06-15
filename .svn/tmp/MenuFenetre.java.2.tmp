@@ -1,0 +1,411 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
+
+
+/*******************************************************************
+ * @Titre_Classe: MENU FEN�TRE
+ * 
+ * @R�sumer:
+ * Cree le menu de la fenetre de l'application.
+ * Presque rien a �t� chang� de la version du "Squelette" fourni.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 28 mai 2017 
+ *******************************************************************/
+public class MenuFenetre extends JMenuBar implements ActionListener{
+
+	/***************************
+	 * Classes instanci�es
+	 ***************************/
+
+	// Pour activer ou desactiver la communication avec le serveur
+	private CommBase commBase; 
+
+	/********************
+	 * Constantes
+	 ********************/
+	private static final int DELAI_QUITTER_MSEC = 200;
+
+	private static final long serialVersionUID = 1536336192561843187L;
+
+	//Appuyer sur CTRL pour atteindre le raccourcis
+	private static final int
+	FICHIER_OBTENIR_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_SEQ_CROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_SEQ_DECROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_AIRE_CROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_AIRE_DECROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_FORME_CROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_FORME_DECROISSANT_MASK = ActionEvent.CTRL_MASK,
+	ORDRE_FORME_DISTANCE_MASK = ActionEvent.CTRL_MASK;
+
+	//Les touches du raccourcis
+	private static final char
+	FICHIER_OBTENIR_TOUCHE_RACC = KeyEvent.VK_Q,
+	ORDRE_SEQ_CROISSANT_RACC = KeyEvent.VK_S,
+	ORDRE_SEQ_DECROISSANT_RACC = KeyEvent.VK_X,
+	ORDRE_AIRE_CROISSANT_RACC = KeyEvent.VK_A,
+	ORDRE_AIRE_DECROISSANT_RACC = KeyEvent.VK_Z,
+	ORDRE_FORME_CROISSANT_RACC = KeyEvent.VK_F,
+	ORDRE_FORME_DECROISSANT_RACC = KeyEvent.VK_V,
+	ORDRE_FORME_DISTANCE_RACC = KeyEvent.VK_D;
+
+	private static final String
+	MENU_FICHIER_TITRE = "Fichier",
+	FICHIER_OBTENIR = "Obtenir formes",
+
+	MENU_ORDRE_TITRE = "Ordre",
+	ORDRE_CROISSANT_TITRE = "Croissant",
+	ORDRE_DECROISSANT_TITRE = "Decroissant",
+
+	SEQ_CROISSANT = "Numero_Sequence_C",
+	SEQ_DECROISSANT = "Numero_Sequence_D",
+	AIRE_CROISSANT = "Aire_Forme_C",
+	AIRE_DECROISSANT = "Aire_Forme_D",
+	FORME_CROISSANT = "Type_Forme_C",
+	FORME_DERCROISSANT = "Type_Forme_D",
+	ORDRE_DISTANCE = "Distance_Forme_C",
+
+	MENU_AIDE_TITRE = "app.frame.menus.help.title",
+	AIDE_PROPOS = "app.frame.menus.help.about",
+	DIALOGUE_A_PROPOS = "app.frame.dialog.about";
+
+	/********************
+	 * Objets Swing
+	 ********************/
+
+	//RadioButton permettant la s�lection du type de tri
+	private JRadioButtonMenuItem 
+	boutonSeqCroissant,
+	boutonSeqDecroissant,
+	boutonAireCroissant,
+	boutonAireDecroissant,
+	boutonFormeCroissant,
+	boutonFormeDecroissant,
+	boutonDistanceOrdre;
+
+	private JMenu 
+	ongletCroissant,
+	ongletDecroissant;
+
+	private ButtonGroup regroupement;
+
+	/********************
+	 * Variable
+	 ********************/
+
+	private String typeAlgorithme = null;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public MenuFenetre(CommBase commBase) {
+
+		this.commBase = commBase;
+
+		addMenuFichier();
+
+		addMenuOrdre();
+
+		addMenuAide();
+
+	}
+
+	/*******************************************************************
+	 * @Titre: MENU FILE
+	 * 
+	 * @R�sumer:
+	 * Cr�ation du menu "File".
+	 * 
+	 * 
+	 *******************************************************************/
+	protected void addMenuFichier() {
+
+		JMenu menu = creerMenuSimple(MENU_FICHIER_TITRE, new String[] {FICHIER_OBTENIR});
+
+		menu.getItem(0).addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				commBase.start();
+
+				try {
+
+					Thread.sleep(DELAI_QUITTER_MSEC);
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+			}
+		});
+
+		menu.getItem(0).setAccelerator(KeyStroke.getKeyStroke(
+				FICHIER_OBTENIR_TOUCHE_RACC, FICHIER_OBTENIR_MASK));
+
+		add(menu);
+	}
+
+	/*******************************************************************
+	 * @Titre: MENU AIDE
+	 * 
+	 * @R�sumer:
+	 * Cr�ation du menu "Help".
+	 * Rien a �t� chang� de la version du "Squelette" fourni.
+	 * 
+	 *******************************************************************/
+	protected void addMenuAide() {
+
+		JMenu menu = creerMenu(MENU_AIDE_TITRE, new String[] { AIDE_PROPOS });
+
+		menu.getItem(0).addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				JOptionPane.showMessageDialog(null,  
+						LangueConfig.getResource(DIALOGUE_A_PROPOS), 
+						LangueConfig.getResource(AIDE_PROPOS), 
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		add(menu);
+	}
+
+	/*******************************************************************
+	 * @Titre: MENU ORDRE
+	 * 
+	 * @R�sumer:
+	 * Cr�ation du menu "ordre".
+	 * 
+	 * 
+	 *******************************************************************/
+	protected void addMenuOrdre(){
+
+		//Permet la cr�ation des boutons avec param�tres 
+		creationBoutons();
+
+		//Permet aux boutons de "communiquer" entre eux
+		regroupementBoutons();
+
+		//Permet d'associer des raccourcis claviers aux boutons
+		raccourcisBoutons();
+
+		JMenu menu = new JMenu(MENU_ORDRE_TITRE);
+
+		menu.add(ongletCroissant);
+		menu.add(ongletDecroissant);
+
+		add(menu);
+	}
+
+	/*******************************************************************
+	 * @Titre: RADIO BUTTON
+	 * 
+	 * @R�sumer:
+	 * Cr�ation des JRadioButton. On leurs associent respectivement un 
+	 * titre, un raccourcis (clavier), une action et un ActionListener.
+	 * 
+	 * @Source:
+	 * setMnemonic: 	http://www.java2s.com/Code/Java/Swing-JFC/RadioButtonMnemonicKey.htm
+	 * ActionCommand: 	http://www.java2s.com/Code/JavaAPI/javax.swing/JRadioButtonsetActionCommandStringactionCommand.htm
+	 *  
+	 *******************************************************************/
+	private void creationBoutons(){
+
+		//Num�ro de s�quence par ordre croissant
+		boutonSeqCroissant = new JRadioButtonMenuItem(SEQ_CROISSANT);
+		boutonSeqCroissant.setMnemonic(ORDRE_SEQ_CROISSANT_RACC);
+		boutonSeqCroissant.setActionCommand(SEQ_CROISSANT);
+		boutonSeqCroissant.addActionListener(this);
+		boutonSeqCroissant.setSelected(true);
+
+		//Num�ro de s�quence par ordre d�croissant
+		boutonSeqDecroissant = new JRadioButtonMenuItem(SEQ_DECROISSANT);
+		boutonSeqDecroissant.setMnemonic(ORDRE_SEQ_DECROISSANT_RACC);
+		boutonSeqDecroissant.setActionCommand(SEQ_DECROISSANT);
+		boutonSeqDecroissant.addActionListener(this);
+		boutonSeqDecroissant.setSelected(true);
+
+		//Aire des formes par ordre croissant
+		boutonAireCroissant = new JRadioButtonMenuItem(AIRE_CROISSANT);
+		boutonAireCroissant.setMnemonic(ORDRE_AIRE_CROISSANT_RACC);
+		boutonAireCroissant.setActionCommand(AIRE_CROISSANT);
+		boutonAireCroissant.addActionListener(this);
+		boutonAireCroissant.setSelected(true);
+
+		//Aire des formes par ordre d�croissant
+		boutonAireDecroissant = new JRadioButtonMenuItem(AIRE_DECROISSANT);
+		boutonAireDecroissant.setMnemonic(ORDRE_AIRE_DECROISSANT_RACC);
+		boutonAireDecroissant.setActionCommand(AIRE_DECROISSANT);
+		boutonAireDecroissant.addActionListener(this);
+		boutonAireDecroissant.setSelected(true);
+
+		//Type de forme par ordre croissant
+		boutonFormeCroissant = new JRadioButtonMenuItem(FORME_CROISSANT);
+		boutonFormeCroissant.setMnemonic(ORDRE_FORME_CROISSANT_RACC);
+		boutonFormeCroissant.setActionCommand(FORME_CROISSANT);
+		boutonFormeCroissant.addActionListener(this);
+		boutonFormeCroissant.setSelected(true);
+
+		//Type de forme par ordre d�croissant
+		boutonFormeDecroissant = new JRadioButtonMenuItem(FORME_DERCROISSANT);
+		boutonFormeDecroissant.setMnemonic(ORDRE_FORME_DECROISSANT_RACC);
+		boutonFormeDecroissant.setActionCommand(FORME_DERCROISSANT);
+		boutonFormeDecroissant.addActionListener(this);
+		boutonFormeDecroissant.setSelected(true);
+
+		//Distance des formes par ordre croissant
+		boutonDistanceOrdre = new JRadioButtonMenuItem(ORDRE_DISTANCE);
+		boutonDistanceOrdre.setMnemonic(ORDRE_FORME_DISTANCE_RACC);
+		boutonDistanceOrdre.setActionCommand(ORDRE_DISTANCE);
+		boutonDistanceOrdre.addActionListener(this);
+		boutonDistanceOrdre.setSelected(true);
+
+	}
+
+	/*******************************************************************
+	 * @Titre: REGROUPEMENT RADIO BUTTON
+	 * 
+	 * @R�sumer:
+	 * On s'assure de regrouper les JRadioButtons pour les rendre exclusif.
+	 * Ensuite on ajoute les JRadioButtons dans un menu d�filant.
+	 * 
+	 * @Source:
+	 * Group: 	http://www.java2s.com/Code/Java/Swing-JFC/RadioButtonMnemonicKey.htm
+	 * 	  
+	 *******************************************************************/
+	private void regroupementBoutons(){
+
+		//Pour que les boutons agissent dans un but commun
+		regroupement = new ButtonGroup();
+
+		regroupement.add(boutonSeqCroissant);
+		regroupement.add(boutonSeqDecroissant);
+		regroupement.add(boutonAireCroissant);
+		regroupement.add(boutonAireDecroissant);
+		regroupement.add(boutonFormeCroissant);
+		regroupement.add(boutonFormeDecroissant);
+		regroupement.add(boutonDistanceOrdre);
+
+		//Onglet du menu d�filant permettant de mettre en ordre croissant
+		ongletCroissant = new JMenu(ORDRE_CROISSANT_TITRE);
+
+		ongletCroissant.add(boutonSeqCroissant);
+		ongletCroissant.add(boutonAireCroissant);
+		ongletCroissant.add(boutonFormeCroissant);
+		ongletCroissant.add(boutonDistanceOrdre);
+
+		//Onglet du menu d�filant permettant de mettre en ordre d�croissant
+		ongletDecroissant = new JMenu(ORDRE_DECROISSANT_TITRE);
+
+		ongletDecroissant.add(boutonSeqDecroissant);
+		ongletDecroissant.add(boutonAireDecroissant);
+		ongletDecroissant.add(boutonFormeDecroissant);
+	}
+
+	/*******************************************************************
+	 * @Titre: RACCOURCIS RADIO BUTTON
+	 * 
+	 * @R�sumer:
+	 * Permet simplement d'ajoutrer des raccourcis aux JRadioButtons
+	 *  
+	 *******************************************************************/
+	private void raccourcisBoutons(){
+
+		boutonSeqCroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_SEQ_CROISSANT_RACC, 
+				ORDRE_SEQ_CROISSANT_MASK));
+
+		boutonSeqDecroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_SEQ_DECROISSANT_RACC, 
+				ORDRE_SEQ_DECROISSANT_MASK));
+
+		boutonAireCroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_AIRE_CROISSANT_RACC, 
+				ORDRE_AIRE_CROISSANT_MASK));
+
+		boutonAireDecroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_AIRE_DECROISSANT_RACC, 
+				ORDRE_AIRE_DECROISSANT_MASK));
+
+		boutonFormeCroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_FORME_CROISSANT_RACC, 
+				ORDRE_FORME_CROISSANT_MASK));
+
+		boutonFormeDecroissant.setAccelerator(KeyStroke.getKeyStroke(ORDRE_FORME_DECROISSANT_RACC, 
+				ORDRE_FORME_DECROISSANT_MASK));
+
+		boutonDistanceOrdre.setAccelerator(KeyStroke.getKeyStroke(ORDRE_FORME_DISTANCE_RACC, 
+				ORDRE_FORME_DISTANCE_MASK));
+	}
+
+	/*******************************************************************
+	 * @Titre: CREATION MENU
+	 * 
+	 * @R�sumer:
+	 * Creer un element de menu a partir d'un champs principal et ses elements.
+	 * 
+	 * @param titleKey champs principal
+	 * @param itemKeys elements
+	 * @return le menu
+	 *
+	 *******************************************************************/
+	private static JMenu creerMenu(String titleKey,String[] itemKeys) {
+
+		JMenu menu = new JMenu(LangueConfig.getResource(titleKey));
+
+		for(int i = 0; i < itemKeys.length; ++i) {
+
+			menu.add(new JMenuItem(LangueConfig.getResource(itemKeys[i])));
+		}
+		return menu;
+	}
+
+	/*******************************************************************
+	 * @Titre: CREATION MENU SIMPLE
+	 * 
+	 * @R�sumer:
+	 * Ajout des onglets "Obtenir formes" et "Ordre" au menu, suivi 
+	 * de leurs sous-options.
+	 * 
+	 * @param titleKey champs principal
+	 * @param itemKeys elements
+	 * @return le menu
+	 *
+	 *******************************************************************/
+	private static JMenu creerMenuSimple(String titleKey, String[] itemKeys) {
+
+		JMenu menu = new JMenu(titleKey);
+
+		for(int i=0; i < itemKeys.length; ++i) {
+
+			menu.add(new JMenuItem(itemKeys[i]));
+		}
+
+		return menu;
+	}
+
+	// valeur du tri grace au action listener
+	//https://examples.javacodegeeks.com/desktop-java/swing/jbutton/set-action-command-for-jbutton/
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		//typeAlgorithme = regroupement.getSelection().getActionCommand();
+
+		typeAlgorithme = e.getActionCommand();
+
+		System.out.println(typeAlgorithme);
+
+	}
+
+	/********************
+	 * GET ORDRE FORMES
+	 ********************/
+	public String getTypeAlgorithme() {
+
+		return typeAlgorithme;
+	}
+}

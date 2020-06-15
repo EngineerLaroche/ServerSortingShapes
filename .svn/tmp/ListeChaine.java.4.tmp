@@ -1,0 +1,247 @@
+<<<<<<< .mine
+
+/*******************************************************************
+ * @Titre: LISTE CHAINE
+ * 
+ * @Resumer:
+ * On retrouve les algorithmes pour trier les formes avec comme support
+ * la classe Noeud.
+ * 
+ * @Auteur: Alexandre Laroche et Tomy Nguyen
+ * @Date: 22 juin 2017
+ * 
+ * @Source:
+ * Inspiration generale:	http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+ * Inspiration tri:			http://www.sanfoundry.com/java-program-implement-merge-sort-algorithm-linked-list/
+ * Inspiration deplacer: 	https://stackoverflow.com/questions/16410587/insertion-sort-using-linked-integer-nodes
+ * Inspiration Comparer:	https://codereview.stackexchange.com/questions/8521/insert-sort-on-a-linked-list
+ * 
+ *******************************************************************/
+||||||| .r103
+=======
+/**
+ * @author Tomy Nguyen
+ *
+ * Classe implementant le concept de liste chainee.
+ * La structure est composee de noeuds connectes par lien unique.
+ *
+ * References : http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+ * @param <E> Type d'objet des elements de la liste
+ */
+>>>>>>> .r107
+public class ListeChaine<E>{
+
+	/********************
+	 * Variables (noeuds)
+	 ********************/
+	
+	private Noeud<E> premierNoeud;
+	private Noeud<E> dernierNoeud;
+	
+	private int size = 0;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	
+	public ListeChaine() {}
+
+	/*******************************************************************
+	 * @Titre: AJOUTER FORME
+	 * 
+	 * @Resumer:
+	 * Ajoute un nouvel objet a un emplacement precis.
+	 * Le noeud original et les noeuds suivants sont decales vers la 
+	 * droite (incremente).
+	 * 
+	 * @param nouveauObjet Element a ajouter
+	 * @param index Position du nouveau noeud
+	 * 
+	 *******************************************************************/
+	public void ajouter(E nouveauObjet, int index) {
+
+		if (index == 0) {
+			ajouterDebut(nouveauObjet);
+		} 
+		else if(index == size) {
+			ajouterFin(nouveauObjet);
+		} 
+		else {
+			Noeud<E> noeudPrec = premierNoeud;
+			Noeud<E> nouveauNoeud;
+			Noeud<E> noeudDeplace;
+
+			for (int i = 0; i < index-1; i++) {
+				noeudPrec = noeudPrec.getProchain();
+			}
+			noeudDeplace = noeudPrec.getProchain();
+			nouveauNoeud = new Noeud<E>(nouveauObjet, noeudDeplace);
+			noeudPrec.setProchain(nouveauNoeud);
+			size++;
+		}
+
+	}
+
+<<<<<<< .mine
+	/*******************************************************************
+	 * @Titre: AJOUTER FIN
+	 * 
+	 * @Resumer:
+	 * Ajoute un nouvel objet a la fin.
+	 * Le noeud original et les noeuds suivants sont decales vers la 
+	 * droite (incremente).
+	 * 
+	 * @param nouveauObjet
+	 * 
+	 *******************************************************************/
+||||||| .r103
+=======
+	/**
+	 * Ajoute un nouvel objet a la fin de la liste
+	 * 
+	 * @param nouveauObjet Objet a ajouter a la liste
+	 */
+>>>>>>> .r107
+	public void ajouterFin(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+		} else {
+			dernierNoeud.setProchain(new Noeud<E>(nouveauObjet));
+			dernierNoeud = dernierNoeud.getProchain();
+		}
+		size++;
+	}
+
+<<<<<<< .mine
+	/*******************************************************************
+	 * @Titre: AJOUTER DEBUT
+	 * 
+	 * @Resumer:
+	 * Ajoute un nouvel objet au debut.
+	 * Le noeud original et les noeuds suivants sont decales vers la 
+	 * droite (incremente).
+	 * 
+	 * @param nouveauObjet
+	 * 
+	 *******************************************************************/
+||||||| .r103
+=======
+	/**
+	 * Ajoute un nouvel objet au debut de la liste et 
+	 * decale les objets existants vers la droite
+	 * 
+	 * @param nouveauObjet Objet a ajouter a la liste
+	 */
+>>>>>>> .r107
+	public void ajouterDebut(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+
+		} else {
+			premierNoeud = new Noeud<E>(nouveauObjet, premierNoeud);
+		}
+		size++;
+	}
+
+<<<<<<< .mine
+	/*******************************************************************
+	 * @Titre: ENLEVER
+	 * 
+	 * @Resumer:
+	 * Retire un objet.
+	 * Le noeud original et les noeuds suivants sont decales vers la 
+	 * droite (incremente).
+	 * 
+	 * @param nouveauObjet
+	 * 
+	 *******************************************************************/
+||||||| .r103
+=======
+	/**
+	 * Enleve le noeud a la position donnee en parametre
+	 * 
+	 * @param index Position du noeud a enlever
+	 */
+>>>>>>> .r107
+	public void enlever(int index) {
+
+		if (premierNoeud == dernierNoeud) {
+			premierNoeud = null;
+			dernierNoeud = null;
+		} else {
+			Noeud<E> noeudPrec = getNoeud(index - 1);
+			Noeud<E> noeudEnleve = getNoeud(index);
+
+			if (noeudEnleve == dernierNoeud) {
+				dernierNoeud = noeudPrec;
+			}
+
+			if (noeudEnleve == premierNoeud) {
+				premierNoeud = noeudEnleve.getProchain();
+			} else {
+				noeudPrec.setProchain(noeudEnleve.getProchain());
+			}
+		}
+
+		size--;
+	}
+
+<<<<<<< .mine
+	/********************
+	 * Get Element
+	 ********************/ 
+||||||| .r103
+=======
+	/**
+	 * @param index Position du noeud
+	 * @return L'element contenu dans le noeud
+	 */
+>>>>>>> .r107
+	public E getElement(int index) {
+
+		Noeud<E> noeud = getNoeud(index);
+		
+		return noeud.getContenu();
+	}
+
+<<<<<<< .mine
+	/********************
+	 * Get Noeud
+	 ********************/ 
+||||||| .r103
+=======
+	/**
+	 * @param index Position du noeud
+	 * @return Le noeud
+	 */
+>>>>>>> .r107
+	public Noeud<E> getNoeud(int index) {
+
+		Noeud<E> noeud = premierNoeud;
+
+		for (int i = 0; i < index; i++) {
+			noeud = noeud.getProchain();
+		}
+		return noeud;
+	}
+
+	/********************
+	 * Get Size
+	 ********************/ 
+	public int getSize() {
+		return size;
+	}
+
+	/********************
+	 * Vider chaine
+	 ********************/ 
+	public void viderChaine() {
+
+		premierNoeud = null;
+		dernierNoeud = null;
+	}
+}

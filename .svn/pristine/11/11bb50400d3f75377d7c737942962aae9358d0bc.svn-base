@@ -1,0 +1,106 @@
+import java.awt.BasicStroke;
+import java.awt.Stroke;
+
+import ca.etsmtl.log.util.IDLogger;
+
+/*******************************************************************
+ * @Titre: FORMES ABSTRAITES
+ * 
+ * @R�sumer:
+ * La classe abstraite est con�ue de fa�on � �tre minimaliste. 
+ * L'id�e est de permettre l'ajout d'options dans le cas o� l'�volution 
+ * du Travail_Pratique_01 prend une tournure diff�rente.
+ * 
+ * Pour l'instant, on retrouve seulement une variable qui garde en 
+ * m�moire le num�ro de s�quence associ� � une forme. 
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public abstract class FormesAbstraites implements InterfaceFormes{
+
+	//Num�ro de s�quence d'une forme
+	protected int numeroSeq;
+	protected String nomForme;
+	
+	//Numero d'importance pour le tri
+	protected int numeroTri;
+
+	protected int 
+	positionX,
+	positionY;
+
+	//M�thode statique qui permet l'ajout d'un num�ro de s�quence au Journal
+	IDLogger logger = IDLogger.getInstance();
+
+	/********************
+	 * Constructeurs
+	 ********************/
+	
+	public FormesAbstraites(int nseq, String nomForme, int valeurX, int valeurY, int numeroTri){
+
+		this.numeroSeq = nseq;
+		this.nomForme = nomForme;
+		this.positionX = valeurX;
+		this.positionY = valeurY;
+		
+		this.numeroTri = numeroTri;
+		
+		//Utilise pour la validation 
+		logger.logID(nseq);
+
+	}
+
+	/*******************************************************************
+	 * @Titre: GET STROKE
+	 * 
+	 * @R�sumer:
+	 * On donne les param�tres � la classe Stroke pour obtenir une ligne
+	 * pointill�e qui sera utilis� pour former un cadrage autour de la forme.
+	 * On retourne le type de ligne pointill�e.
+	 * 
+	 * @Source: 
+	 * Stroke Line: https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * 
+	 *******************************************************************/
+	public Stroke getStroke(){
+
+		float[] pointiller = { 6F, 6F };
+
+		//Param�tre pour cr�er la ligne de contour pointiller voulu
+		Stroke stroke = new BasicStroke( 1F, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2F, pointiller, 0F );
+
+		return stroke;
+	}
+
+	public int getNumeroSeq() {
+
+		return numeroSeq;
+	}
+
+	public String getNomForme() {
+
+		return nomForme;
+	}
+
+	public int getPositionX() {
+
+		return positionX;
+	}
+
+	public int getPositionY() {
+
+		return positionY;
+	}
+
+	public void setPositionXY(int valeurX, int valeurY) {
+		
+		this.positionX = valeurX;
+		this.positionY = valeurY;
+	}
+	
+	public int getNumeroTri() {
+
+		return numeroTri;
+	}
+}

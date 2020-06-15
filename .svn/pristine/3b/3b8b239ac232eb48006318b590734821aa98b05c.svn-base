@@ -1,0 +1,155 @@
+import java.awt.Dimension;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+/*******************************************************************
+ * @Titre_Classe: FENeTRE FORMES
+ * 
+ * @Resumer: 
+ * Cette fenetre gere l'affichage des forme e l'ecran.
+ * La fenetre possede une dimension fixe de 500 x 500 et 
+ * supporte un maximum de 10 formes.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 26 mai 2017 
+ * 
+ *******************************************************************/ 
+public class FenetreFormes extends JComponent{
+
+	/***************************
+	 * Classes instanciees
+	 ***************************/
+
+	private final Dimension dimension;
+	private FormesAbstraites formesAbstraites;
+	private ListeChaine<FormesAbstraites> listeAbstraites;
+
+	/********************
+	 * Constantes
+	 ********************/
+
+	private static final long serialVersionUID = -2262235643903749505L;
+
+	//On donne les dimensions de la fenetre et la quantite maximale de formes 
+	private static final int 
+	WIDTH = 500,
+	HEIGHT = 500;
+
+	/********************
+	 * Variable
+	 ********************/
+
+	//Utilise pour compter le nombre de formes e l'affiche
+	private int 
+	nombreFormes = 0,
+	deplacer = 0;
+
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FenetreFormes(){
+
+		//On donnes les dimensions de la fenetre
+		dimension = new Dimension(WIDTH, HEIGHT);
+
+		//On cree une liste qui peut garder en memoire des formes abstraites
+		listeAbstraites = new ListeChaine<FormesAbstraites>();
+	}
+
+	/*******************************************************************
+	 * @Titre: AJOUTER FORME
+	 * 
+	 * @Resumer:
+	 * Gere la capacite maximale de formes e afficher e l'ecran avec une 
+	 * limite de 10. Permet aussi d'afficher continuellement 10 formes
+	 * avec un changement dynamique.
+	 * 
+	 *******************************************************************/
+	public void ajoutforme(FormesAbstraites formesAbstraites){
+
+		//Permet le deplacement de +40
+		//Fonctionne, mais je dois apporter des ajustements encore.
+		
+		//Si la forme depasse les dimensions de la fenetre
+//		if(formesAbstraites.getPositionX() < 500 || formesAbstraites.getPositionY() < 500){
+//
+//			//On procede au deplacement des formes avec des bons de 40 en X et 40 en Y
+//			formesAbstraites.setPositionXY(deplacer, deplacer);
+//			
+//			deplacer += 40;
+//		}
+//		else{
+//
+//			deplacer = 0;
+//		
+//			//Reinitialise la position de la forme dans le coin haut gauche.
+//			formesAbstraites.setPositionXY(deplacer, deplacer);
+//			
+//			
+//		}
+
+		//Ajout des formes dans une Array List.
+		listeAbstraites.ajouterFin(formesAbstraites);
+
+		//On s'assure d'afficher maximum 10 formes
+		if(listeAbstraites.getSize() == 11){
+
+			//Enleve la forme a la premiere position
+			listeAbstraites.enlever(0);
+
+		}
+	}
+
+
+	public void viderListeChaine() {
+
+		listeAbstraites.viderChaine();
+	}	
+
+
+	/*******************************************************************
+	 * @Titre: AFFICHE FORMES
+	 * 
+	 * @Resumer:
+	 * Affiche e l'ecran les formes gardees en memoire de la liste.
+	 * 
+	 *******************************************************************/
+	@Override 
+	public void paintComponent(Graphics g){
+
+		for (int i = 0; i < listeAbstraites.getSize(); i++){
+
+			//Affiche e l'ecran les formes de la liste
+			listeAbstraites.getElement(i).graphiqueForme(g);
+
+		}
+	}
+
+	public void afficheListeFormes(ListeChaine<FormesAbstraites> listeAbstraites){
+
+		this.listeAbstraites = listeAbstraites;
+
+		nombreFormes = listeAbstraites.getSize();
+	}
+
+	public ListeChaine<FormesAbstraites> getListeAbstraites(){
+
+		return listeAbstraites;
+	}
+
+
+	/*******************************************************************
+	 * @Titre: DIMENSION
+	 * 
+	 * @Resumer:
+	 * Le Layout qui utilise (contient) FenetreFormes doit reserver 
+	 * l'espace necessaire a son affichage.
+	 * 
+	 *******************************************************************/
+	@Override 
+	public Dimension getPreferredSize(){
+
+		return dimension;
+	}
+}

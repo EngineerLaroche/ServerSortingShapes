@@ -1,0 +1,97 @@
+
+public class AlgorithmeTriForme extends AbstraitMecanismesTri {
+
+	private Noeud suivant, echange;
+
+	private FormesAbstraites formesAbstraites;
+	private FormesAbstraites formesSuivantes;
+	
+	private static final String
+	FORME_CARRE = "CARRE",
+	FORME_RECTANGLE = "RECTANGLE",
+	FORME_CERCLE = "CERCLE",
+	FORME_OVALE = "OVALE",
+	FORME_LIGNE = "LIGNE";
+
+	public AlgorithmeTriForme(){
+		
+		suivant = echange = null;
+	}
+	
+	public AlgorithmeTriForme(Noeud noeud, String ordreTri, Noeud suivantForme, Noeud echangeForme){
+
+		super(noeud, ordreTri);
+			
+		this.suivant = suivantForme;
+		this.echange = echangeForme;
+		
+		while(getNoeud().getProchain() != null){
+
+			formesAbstraites = (FormesAbstraites) getNoeud().getContenu(); 
+			formesSuivantes = (FormesAbstraites) getNoeud().getProchain().getContenu();
+			suivant = getNoeud().getProchain();
+
+			if(ordreTri.equals(getCroissant())){
+
+				// chercher la place du noeud dans la liste 	
+				for(formesAbstraites = (FormesAbstraites) getNoeud().getContenu();
+						formesSuivantes == null;
+							formesAbstraites = (FormesAbstraites) getNoeud().getProchain().getContenu());       			
+
+				if (formesSuivantes.getNomForme() == FORME_CARRE){            			           			
+
+					repitionTri(); 
+
+					if(formesSuivantes.getNomForme() == FORME_RECTANGLE && formesAbstraites.getNomForme() != FORME_CARRE){
+
+						repitionTri();
+
+						if(formesSuivantes.getNomForme() == FORME_CERCLE && 
+								(formesAbstraites.getNomForme() != FORME_CARRE || formesAbstraites.getNomForme() != FORME_RECTANGLE)){
+
+							repitionTri();
+
+							if(formesSuivantes.getNomForme() == FORME_OVALE && (formesAbstraites.getNomForme() != FORME_CARRE || 
+									formesAbstraites.getNomForme() != FORME_RECTANGLE || formesAbstraites.getNomForme() != FORME_CERCLE)){
+
+								repitionTri();                     	        
+							}
+						}
+					}
+				}                		
+
+			} else {
+
+				if (formesSuivantes.getNomForme() == FORME_LIGNE){            			           			
+
+					repitionTri();
+
+					if(formesSuivantes.getNomForme() == FORME_OVALE && formesAbstraites.getNomForme() != FORME_LIGNE){
+
+						repitionTri();
+
+						if(formesSuivantes.getNomForme() == FORME_CERCLE && 
+								(formesAbstraites.getNomForme() != FORME_LIGNE || formesAbstraites.getNomForme() != FORME_OVALE)){
+
+							repitionTri();
+
+							if(formesSuivantes.getNomForme() == FORME_RECTANGLE && (formesAbstraites.getNomForme() != FORME_LIGNE || 
+									formesAbstraites.getNomForme() != FORME_OVALE || formesAbstraites.getNomForme() != FORME_CERCLE)){
+
+								repitionTri(); 
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void repitionTri(){
+
+		echange = getChaine(formesSuivantes,suivant);
+		suivant = getChaine(formesAbstraites,getNoeud());   
+		setNoeud(echange); 
+
+	}
+}

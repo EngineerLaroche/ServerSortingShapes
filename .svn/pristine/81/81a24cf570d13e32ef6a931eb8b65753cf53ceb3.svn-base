@@ -1,0 +1,347 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
+
+
+/*******************************************************************
+ * @Titre_Classe: MENU FENÊTRE
+ * 
+ * @Résumer:
+ * Cree le menu de la fenetre de l'application.
+ * Presque rien a été changé de la version du "Squelette" fourni.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 28 mai 2017 
+ *******************************************************************/
+public class MenuFenetre extends JMenuBar implements ActionListener{
+
+	/***************************
+	 * Classes instanciées
+	 ***************************/
+
+	private JMenuItem obtenirFormes, obtenirAide;
+	
+
+	// Pour activer ou desactiver la communication avec le serveur
+	private CommBase commBase; 
+
+	/********************
+	 * Constantes
+	 ********************/
+	private static final int DELAI_QUITTER_MSEC = 200;
+	
+	private static final long serialVersionUID = 1536336192561843187L;
+
+	//Appuyer sur CTRL pour atteindre le raccourcis
+	private static final int
+	MENU_FICHIER_GET_TOUCHE_MASK = ActionEvent.CTRL_MASK;
+//	MENU_ORDRE_SEQC_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_SEQD_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_AIRC_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_AIRD_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_TYPES_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_TYPEI_TOUCHE_MASK = ActionEvent.CTRL_MASK,
+//	MENU_ORDRE_DIST_TOUCHE_MASK = ActionEvent.CTRL_MASK;
+
+	//Les touches du raccourcis
+	private static final char
+	MENU_FICHIER_GET_TOUCHE_RACC = KeyEvent.VK_Q,
+	MENU_ORDRE_SEQC_TOUCHE_RACC = KeyEvent.VK_F,
+	MENU_ORDRE_SEQD_TOUCHE_RACC = KeyEvent.VK_B,
+	MENU_ORDRE_AIRC_TOUCHE_RACC = KeyEvent.VK_V,
+	MENU_ORDRE_AIRD_TOUCHE_RACC = KeyEvent.VK_E,
+	MENU_ORDRE_TYPES_TOUCHE_RACC = KeyEvent.VK_Z,
+	MENU_ORDRE_TYPEI_TOUCHE_RACC = KeyEvent.VK_U,
+	MENU_ORDRE_DIST_TOUCHE_RACC = KeyEvent.VK_T;
+
+
+	private static final String
+	MENU_FICHIER_TITRE = "app.frame.menus.file.title",
+	MENU_FICHIER_GET = "app.frame.menus.file.get",
+	MENU_AIDE_TITRE = "app.frame.menus.help.title",
+	MENU_AIDE_PROPOS = "app.frame.menus.help.about",
+	MESSAGE_DIALOGUE_A_PROPOS = "app.frame.dialog.about",
+	MENU_ORDRE_TITRE = "app.frame.menus.ORDRE.title";
+//	MENU_DESSIN_TITRE = "app.frame.menus.draw.title",
+//	MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",
+//	MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",
+//	MENU_ORDRE_SEQD = "app.frame.menus.ORDRE.SEQD",
+//	MENU_ORDRE_SEQC = "app.frame.menus.ORDRE.SEQC",
+//	MENU_ORDRE_AIRC = "app.frame.menus.ORDRE.AIRC",
+//	MENU_ORDRE_AIRD = "app.frame.menus.ORDRE.AIRD",
+//	MENU_ORDRE_TYPES = "app.frame.menus.ORDRE.TYPES",
+//	MENU_ORDRE_TYPEI = "app.frame.menus.ORDRE.TYPEI",
+//	MENU_ORDRE_DIST = "app.frame.menus.ORDRE.DIST",
+	
+	
+	private static final String 
+	triSEQC = "Num. seq croissant",
+	triSEQD = "Num. seq décroissant",
+	triAIRC = "Aire croissant",
+	triAIRD = "Aire décroissant",
+	triTYPES = "Type forme croissant",
+	triTYPEI = "Type forme décroissant",
+	triDIST = "Ordre distance";
+
+	
+	//RadioButton permettant la sélection du type de tri
+	private JRadioButton 
+	SEQC = new JRadioButton(triSEQC),
+	SEQD = new JRadioButton(triSEQD),
+	AIRC = new JRadioButton(triAIRC),
+	AIRD = new JRadioButton(triAIRD),
+	TYPES = new JRadioButton(triTYPES),
+	TYPEI = new JRadioButton(triTYPEI),
+	DIST = new JRadioButton(triDIST);
+	
+	protected String ordre = null;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public MenuFenetre(){}
+
+	public MenuFenetre(CommBase commBase) {
+
+		this.commBase = commBase;
+
+		addMenuFichier();
+
+		addMenuOrdre();
+
+		addMenuAide();
+
+	}
+
+	/*******************************************************************
+	 * @Titre: MENU DESSIN
+	 * 
+	 * @Résumer:
+	 * Création du menu "File".
+	 * Rien a été changé de la version du "Squelette" fourni.
+	 * 
+	 *******************************************************************/
+	protected void addMenuFichier() {
+
+		JMenu menu = creerMenu(MENU_FICHIER_TITRE, new String[] {MENU_FICHIER_GET});
+
+		obtenirFormes = menu.getItem(0);
+		obtenirFormes.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				//commBase.start();
+				//la fonction est static.....
+				FenetrePrincipale.flushPass();
+				
+				//temporaire !!!
+				commBase.creerCommunication("Standard");
+
+				//commBase.stop();
+
+				try {
+
+					Thread.sleep(DELAI_QUITTER_MSEC);
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+
+				System.exit(0);
+			}
+		});
+				obtenirFormes = menu.getItem(0);
+				obtenirFormes.setAccelerator(KeyStroke.getKeyStroke(MENU_FICHIER_GET_TOUCHE_RACC,
+																		MENU_FICHIER_GET_TOUCHE_MASK));
+
+		add(menu);
+	}
+
+	/*******************************************************************
+	 * @Titre: MENU AIDE
+	 * 
+	 * @Résumer:
+	 * Création du menu "Help".
+	 * Rien a été changé de la version du "Squelette" fourni.
+	 * 
+	 *******************************************************************/
+	protected void addMenuAide() {
+
+		System.out.println(MENU_AIDE_TITRE);
+		JMenu menu = creerMenu(MENU_AIDE_TITRE, new String[] { MENU_AIDE_PROPOS });
+
+		obtenirAide = menu.getItem(0);
+		obtenirAide.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				JOptionPane.showMessageDialog(null,  
+						LangueConfig.getResource(MESSAGE_DIALOGUE_A_PROPOS), 
+						LangueConfig.getResource(MENU_AIDE_PROPOS), 
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		add(menu);
+	}
+	
+	/*******************************************************************
+	 * @Titre: RADIO BUTTON
+	 * 
+	 * @Résumer:
+	 * 
+	 * À optimiser avec boucle FOR en utilisant une liste dynamique !!!
+	 * 
+	 *******************************************************************/
+	private void addMenuOrdre() {
+
+		JRadioButtonMenuItem SEQCbutton = new JRadioButtonMenuItem(triSEQC);
+		SEQCbutton.setMnemonic(MENU_ORDRE_SEQC_TOUCHE_RACC);
+		SEQCbutton.setActionCommand(triSEQC);
+		SEQCbutton.setSelected(true);
+
+		JRadioButtonMenuItem SEQDbutton = new JRadioButtonMenuItem(triSEQD);
+		SEQDbutton.setMnemonic(MENU_ORDRE_SEQD_TOUCHE_RACC);
+		SEQDbutton.setActionCommand(triSEQD);
+		SEQDbutton.setSelected(true);
+
+		JRadioButtonMenuItem AIRCbutton = new JRadioButtonMenuItem(triAIRC);
+		AIRCbutton.setMnemonic(MENU_ORDRE_AIRC_TOUCHE_RACC);
+		AIRCbutton.setActionCommand(triAIRC);
+		AIRCbutton.setSelected(true);
+
+		JRadioButtonMenuItem AIRDbutton = new JRadioButtonMenuItem(triAIRD);
+		AIRDbutton.setMnemonic(MENU_ORDRE_AIRD_TOUCHE_RACC);
+		AIRDbutton.setActionCommand(triAIRD);
+		AIRDbutton.setSelected(true);
+
+		JRadioButtonMenuItem TYPESbutton = new JRadioButtonMenuItem(triTYPES);
+		TYPESbutton.setMnemonic(MENU_ORDRE_TYPES_TOUCHE_RACC);
+		TYPESbutton.setActionCommand(triTYPES);
+		TYPESbutton.setSelected(true);
+
+		JRadioButtonMenuItem TYPEIbutton = new JRadioButtonMenuItem(triTYPEI);
+		TYPEIbutton.setMnemonic(MENU_ORDRE_TYPEI_TOUCHE_RACC);
+		TYPEIbutton.setActionCommand(triTYPEI);
+		TYPEIbutton.setSelected(true);
+
+		JRadioButtonMenuItem DISTbutton = new JRadioButtonMenuItem(triDIST);
+		DISTbutton.setMnemonic(MENU_ORDRE_DIST_TOUCHE_RACC);
+		DISTbutton.setActionCommand(triDIST);
+		DISTbutton.setSelected(true);
+
+
+		/**
+		 * 	mettre dans le meme group les radio buttons afin qu'il soit exclusif. 
+		 */
+		ButtonGroup ensemble = new ButtonGroup();
+
+		ensemble.add(SEQCbutton);
+		ensemble.add(SEQDbutton);
+		ensemble.add(AIRCbutton);
+		ensemble.add(AIRDbutton);
+		ensemble.add(TYPESbutton);
+		ensemble.add(TYPEIbutton);
+		ensemble.add(DISTbutton);
+
+
+		SEQDbutton.addActionListener(this);
+		SEQCbutton.addActionListener(this);
+		AIRCbutton.addActionListener(this);
+		AIRDbutton.addActionListener(this);
+		TYPESbutton.addActionListener(this);
+		TYPEIbutton.addActionListener(this);
+		DISTbutton.addActionListener(this);
+
+		/** 
+		 *  ajout des buttons dans le paneau
+		 */
+		JMenu menu = creerMenuButtonGroup(MENU_ORDRE_TITRE);
+
+		menu.add(SEQCbutton);
+		menu.add(SEQDbutton);
+		menu.add(AIRCbutton);
+		menu.add(AIRDbutton);
+		menu.add(TYPESbutton);
+		menu.add(TYPEIbutton);
+		menu.add(DISTbutton);
+		add(menu);
+
+	}
+
+	/*******************************************************************
+	 * @Titre: CREATION MENU
+	 * 
+	 * @Résumer:
+	 * Creer un element de menu a partir d'un champs principal et ses elements
+	 * Rien a été changé de la version du "Squelette" fourni.
+	 * 
+	 * @param titleKey champs principal
+	 * @param itemKeys elements
+	 * @return le menu
+	 *
+	 *******************************************************************/
+	private static JMenu creerMenu(String titleKey,String[] itemKeys) {
+		
+		JMenu menu = new JMenu(LangueConfig.getResource(titleKey));
+
+		
+		for(int i = 0; i < itemKeys.length; ++i) {
+
+			//Temporaire !!
+			//LangueConfig.getResource(itemKeys[i])
+			menu.add(new JMenuItem("Obtenir Formes"));
+		}
+		return menu;
+	}
+
+
+	private static JMenu creerMenuButtonGroup(String titleKey) {
+
+		//Temporaire !!
+		//LangueConfig.getResource(titleKey)
+		JMenu menu = new JMenu("Ordre");
+
+		return menu;
+	}
+
+
+	// valeur du tri grace au action listener
+
+	public void actionPerformed(ActionEvent e) {
+
+		System.out.println("" + e.getActionCommand());
+		ordre = e.getActionCommand();
+
+		//			System.out.println("RelanceTri : " + e.getActionCommand());
+		//			
+		//			tri = e.getActionCommand();
+		//			
+		//			commBase.creerCommunication("Patch");
+	}
+
+	/********************
+	 * GET ORDRE FORMES
+	 ********************/
+	public String getOrdre() {
+		
+		return ordre;
+	}
+
+	/********************
+	 * SET ORDRE FORMES
+	 ********************/
+	public void setOrdre(String ordre) {
+		
+		this.ordre = ordre;
+	}
+}

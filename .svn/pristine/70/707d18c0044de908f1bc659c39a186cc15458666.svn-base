@@ -1,0 +1,183 @@
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+/*************************************************************************
+ * @Titre: FENÊTRE INPUT 
+ * 
+ * @Résumer:
+ * Demande à l'utilisateur d'inscrire un nom d'hôte et un 
+ * numero de port pour créer une connexion au serveur. 
+ * S'assusre que l'utilisateur entre les bons caractères 
+ * dans les bonnes cases pour éviter d'éventuels problèmes de connexions.
+ * 
+ * @Source 
+ * JOptionPane Erreurs: 	https://stackoverflow.com/questions/34391402/show-input-dialog-box-after-error-message-dialog-box
+ * JOptionPane Inputs: 		https://stackoverflow.com/questions/27207887/java-jbutton-opening-another-jframe-that-i-can-input-into
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 12 juin 2017 
+ *************************************************************************/
+public class FenetreInput {
+
+	private CommBase commBase;
+	private CommunicationServeur communicationServeur;
+	
+	/********************
+	 * Variables
+	 ********************/ 
+
+	//Garde en mémoire la sélection du bouton JOptionPane
+	private int option;
+
+	//Garde en mémoire le nom qui identifie l'hote et numéro de port de la connexion TCP/IP
+	private String nomHote, numeroPort;
+
+	private boolean annulationConnexion;
+
+	/********************
+	 * Constructeur
+	 ********************/ 
+	public FenetreInput(){
+
+		nomHote = null;
+		numeroPort = null;
+		annulationConnexion = false;
+
+	}
+
+	/*************************************************************************
+	 * @Titre: FENÊTRE INPUT CONNEXION
+	 * 
+	 * @Résumer:
+	 * S'assusre que l'utilisateur entre les bons caractères 
+	 * dans les bonnes cases pour éviter d'éventuels problèmes de connexions.
+	 * 
+	 * @Source 
+	 * JOptionPane Erreurs: 	https://stackoverflow.com/questions/34391402/show-input-dialog-box-after-error-message-dialog-box
+	 * JOptionPane Inputs: 		https://stackoverflow.com/questions/27207887/java-jbutton-opening-another-jframe-that-i-can-input-into
+	 *************************************************************************/
+	public void fenetreInputConnexion(){
+
+		//Espaces pour écrire le nom de l'hôte et le numéro de port
+		JTextField hote = new JTextField();
+		JTextField port = new JTextField();
+
+		//Affichent les messages d'erreurs du nom de l'hôte et du numéro de 
+		JLabel erreurHote = new JLabel();
+		JLabel erreurPort = new JLabel();
+
+		//Regroupement des messages d'erreurs et des zones d'écritures pour le JOptionPane
+		Object[] message = {erreurHote, "Nom Hote:", hote, 
+				erreurPort, "Numero Port:", port};
+
+		//On procède à des vérifications pour éviter les erreurs d'inscriptions
+		do{
+
+			//Fenêtre qui demande le nom d'hôte et le numéro de port du serveur formes
+			option = JOptionPane.showConfirmDialog(null, message, "Paramètres de connexion", JOptionPane.OK_CANCEL_OPTION);
+
+			//Garde en mémoire le nom de l'hôte entré
+			nomHote = hote.getText();
+
+			//Garde en mémoire le numéro de port entré
+			numeroPort = port.getText();
+
+			//Si l'utilisateur sélectionne le bouton "Ok"
+			if (option == JOptionPane.OK_OPTION) {
+
+				//Si l'utilisateur entre autre chose que des lettres ou laisse un espace vide
+				if(!nomHote.matches("[a-zA-Z]+") || nomHote.equals("")){ 
+
+					//Message d'avertissement en rouge
+					erreurHote.setText("<html><b style='color:red'>Entrez uniquement des lettres</b><br>");
+				}
+
+				//Si l'utilisateur entre des lettres et qu'il n'y pas d'espace vide, on retire le message d'erreur
+				if(nomHote.matches("[a-zA-Z]+") && !nomHote.equals("")){ 
+
+					//Retire message d'avertissement 
+					erreurHote.setText("");
+				}
+
+				//Si l'utilisateur entre autre chose que des nombres ou laisse un espace vide
+				if(!numeroPort.matches("[0-9]+") || numeroPort.equals("")){ 
+
+					//Message d'avertissement en rouge
+					erreurPort.setText("<html><b style='color:red'>Entrez uniquement des nombres</b><br>");
+				}
+
+				//Si l'utilisateur entre des nombres et qu'il n'y pas d'espace vide, on retire le message d'erreur
+				if(numeroPort.matches("[0-9]+") && !numeroPort.equals("")){ 
+
+					//Retire message d'avertissement 
+					erreurPort.setText("");
+				}
+			}
+			//Si l'utilisateur sélectionne le bouton "Cancel"
+			else if (option == JOptionPane.CANCEL_OPTION){
+
+				annulationConnexion = true;
+
+				//Met fin à la fenêtre JOptionPane
+				return;
+			}	
+			//Si l'utilisateur sélectionne le bouton "X"
+			else if(option == JOptionPane.CLOSED_OPTION){
+
+				annulationConnexion = true;
+
+				//Met fin à la fenêtre JOptionPane
+				return;
+			}
+		}
+		//Tant qu'il n'y a pas d'erreurs d'inscription pour la création d'une connexion TCP/IP, on procède.
+		while(nomHote != "" && !nomHote.matches("[a-zA-Z]+") || numeroPort != "" && !numeroPort.matches("[0-9]+")); 
+
+	}
+
+	/*************************************************************************
+	 * @Titre: FENÊTRE ERREUR CONNEXION
+	 * 
+	 * @Résumer:
+	 * Fenêtre JOptionPane qui avertis l'utilisateur d'un problème de connexion 
+	 * avec le serveur.
+	 * 
+	 * @Source 
+	 * JOptionPane Erreurs: 	https://stackoverflow.com/questions/34391402/show-input-dialog-box-after-error-message-dialog-box
+	 * JOptionPane Inputs: 		https://stackoverflow.com/questions/27207887/java-jbutton-opening-another-jframe-that-i-can-input-into
+	 *************************************************************************/
+	public void fenetreErreurConnexion(){
+
+		//On averti l'utilisateur que le port entré ne concorde avec aucuns ServeurForme
+		JOptionPane.showMessageDialog(null, "<html><b style='color:red'>Tentative de connexion au ServeurForme impossible.</b><br>"
+				+ "\n\n<html><b style='color:orange'>Veuillez vous assurer de la conformité du </b><br>"
+				+ "<html><b style='color:orange'>numéro de port et de l'activité du serveur.</b><br>"
+				+ "\n\nAppuyez sur <OK> pour une nouvelle tentative de connexion. ", "Avertissement", 
+				JOptionPane.WARNING_MESSAGE);
+	}
+
+	/********************
+	 * Get Nom Hote
+	 ********************/ 
+	public String getNomHote(){
+
+		return nomHote;
+	}
+
+	/********************
+	 * Get Numero Port
+	 ********************/ 
+	public int getNumeroPort(){
+
+		return Integer.parseInt(numeroPort);
+	}
+
+	/********************
+	 * Get Annulation
+	 ********************/ 
+	public boolean getAnnulationConnexion(){
+
+		return annulationConnexion;
+	}
+}

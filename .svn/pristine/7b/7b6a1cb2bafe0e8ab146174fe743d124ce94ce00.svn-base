@@ -1,0 +1,87 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME OVALE
+ * 
+ * @Résumer:
+ * Création d'un objet graphique de type ovale 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public class FormeOvale extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int centreX, centreY, rayonH, rayonV;
+	private String nomForme;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeOvale(int nseq, String nomForme, int centreX, int centreY, int rayonH, int rayonV){
+
+		//Numéro de séquence de la forme
+		super(nseq, nomForme);
+
+		this.centreX = centreX;
+		this.centreY = centreY;
+		this.rayonH = rayonH;
+		this.rayonV = rayonV;
+	}
+
+	public double espaceForme() {
+
+		double diametreV = 2 * rayonV;
+		double diametreH = 2 * rayonH;
+
+		if (rayonH < rayonV) {
+
+			return diametreV;
+
+		}else
+
+			return diametreH;
+	}
+
+	public  double aireForme() {
+
+		double aireForme = Math.PI * rayonH * rayonV;
+
+		return aireForme;
+	}
+
+	/********************
+	 * Graphics 
+	 ********************/
+	@Override
+	public void graphiqueForme(Graphics g){
+
+		Graphics2D ovale = (Graphics2D) g;
+
+		Rectangle2D contourRectangle = new Rectangle2D.Float(getAddX(), getAddY(), rayonH, rayonV);
+
+		float[] dash = { 5F, 5F };
+
+		Stroke dashedStroke = new BasicStroke( 2F, BasicStroke.CAP_SQUARE,
+														BasicStroke.JOIN_MITER, 3F, dash, 0F );
+		
+		//Remplissage coloré de la forme
+		ovale.setColor(Color.CYAN);
+		ovale.fill( dashedStroke.createStrokedShape(contourRectangle));
+		
+		ovale.fillOval(getAddX(), getAddY(),rayonH,rayonV);
+		//ovale.fillOval(centreX, centreY, rayonH, rayonV);
+
+		//Contour noir aide à identifier une forme qui emboite une autre.
+//		ovale.setColor(Color.BLACK);
+//		ovale.drawOval(centreX, centreY, rayonH, rayonV);
+	}
+}

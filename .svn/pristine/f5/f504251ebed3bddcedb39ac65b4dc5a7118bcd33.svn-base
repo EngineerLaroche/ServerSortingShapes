@@ -1,0 +1,84 @@
+
+public class AlgorithmeTriSequence extends AbstraitMecanismesTri{
+
+	private Noeud suivant, echange;
+	private static boolean inverser = false;
+
+	public AlgorithmeTriSequence(){
+
+		suivant = echange = null;
+	}
+
+	public AlgorithmeTriSequence(Noeud noeud, String ordreTri, Noeud suivantForme, Noeud echangeForme){
+
+		super(noeud, ordreTri);
+
+		this.suivant = suivantForme;
+		this.echange = echangeForme;	
+
+		while(getNoeud().getProchain() != null){
+
+			FormesAbstraites formesAbstraites = (FormesAbstraites) getNoeud().getContenu(); 
+			FormesAbstraites formesSuivantes = (FormesAbstraites) getNoeud().getProchain().getContenu();
+
+			suivant = getNoeud().getProchain();     	
+
+			if(ordreTri.equals(getCroissant())){
+
+
+				do {
+
+					for (int i = 1; i < getMaxFormes() - 1; i++) {
+
+						int premierSEQ = formesAbstraites.getNumeroSeq();
+						int deuxiemeSEQ = formesSuivantes.getNumeroSeq();
+
+						//Probleme......
+						if ( premierSEQ > deuxiemeSEQ) { 
+
+							inverser = true;
+
+							echange = getNoeud().getProchain();
+							suivant = echange.getProchain();
+
+							//.....TEST.....
+							echange.setProchain(getNoeud());
+							getNoeud().setProchain(suivant);
+
+						}
+						setNoeud(getNoeud().getProchain());
+					}
+
+				}while(inverser);
+
+				repitionBoucle();
+
+			} else {
+				// chercher la place du noeud dans la liste 
+				for(formesAbstraites = (FormesAbstraites) getNoeud().getContenu(); 
+						formesSuivantes == null; 
+						formesAbstraites = (FormesAbstraites) getNoeud().getProchain().getContenu()) {
+
+					if (formesAbstraites.getNumeroSeq() < formesSuivantes.getNumeroSeq()){
+
+						echange = getChaine(formesAbstraites,getNoeud());
+						setNoeud(getChaine(formesSuivantes,suivant));   
+						suivant = echange; 
+					}         	
+				}
+
+				repitionBoucle();
+			}    
+		}
+	}
+
+	private void repitionBoucle(){
+
+		setNoeud(getNoeud());
+
+		for(int i = 0; i < getMaxFormes(); i++){
+
+			setNoeud(getNoeud().getProchain());    
+        }
+	}
+}

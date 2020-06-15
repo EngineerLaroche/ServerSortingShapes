@@ -1,0 +1,90 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME CERCLE
+ * 
+ * @Résumer: 
+ * Création d'un objet graphique de type cercle 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017 
+ *******************************************************************/
+
+public class FormeCercle extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int rayon;
+
+	private static Color BLEU = new Color(0, 0, 255, 150);
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeCercle(int nseq, String nomForme, int positionX, int positionY, int rayon){
+
+		//Numéro de séquence et nom de la forme
+		super(nseq, nomForme, positionX, positionY);
+
+		this.rayon = rayon;
+	}
+
+	/********************
+	 * Aire de la Forme
+	 ********************/
+	public  double aireForme() {
+
+		double airForme = Math.PI * (rayon ^ 2);
+
+		return  airForme;
+	}
+	
+	/********************
+	 * Espace Totale
+	 ********************/
+	public  double distanceForme() {
+
+		double distanceMax =  2 * rayon;
+
+		return distanceMax;
+	}
+
+	/*******************************************************************
+	 * @Titre: GRAPHIQUE CERCLE
+	 * 
+	 * @Résumer:
+	 * Création d'un objet cercle muni d'un couleure avec effet de transparance.
+	 * On y retrouve ensuite un rectangle pointillé autour de la forme.
+	 * 
+	 * @Source:
+	 * Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * Transparance: 	http://www.java2s.com/Code/Java/2D-Graphics-GUI/Drawcanvaswithcolorandtext.htm
+	 *
+	 *******************************************************************/
+	@Override
+	public void graphiqueForme(Graphics g){
+
+		//Création d'un objet graphique de type cercle
+		Graphics2D cercle = (Graphics2D) g;
+
+		//Création d'un rectangle autour des dimensions maximale de la forme
+		Rectangle2D contourRectangle = new Rectangle2D.Float(getPositionX(), getPositionY(), rayon, rayon);
+
+		//Obtenir un cadrage pointillé autour de la forme
+		cercle.setColor(Color.GRAY);
+		cercle.fill(getStroke().createStrokedShape(contourRectangle));
+
+		//Remplissage coloré avec une transparance 
+		cercle.setColor(BLEU);
+		cercle.fillOval(getPositionX(), getPositionY(), rayon, rayon);
+	
+		//Contour coloré de la forme
+		cercle.setColor(Color.BLUE);
+		cercle.drawOval(getPositionX(), getPositionY(), rayon, rayon);
+	}
+}

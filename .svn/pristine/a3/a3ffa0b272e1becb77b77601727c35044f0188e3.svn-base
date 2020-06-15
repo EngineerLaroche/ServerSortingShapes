@@ -1,0 +1,67 @@
+
+//@Source: : http://www.liafa.jussieu.fr/~hf/verif/ens/an08-09/IF2/Cours11/C101.htm
+public class TrieFormes {
+
+	//Ordre de tri
+		public static final int ASCENDANT = 0;
+		public static final int DESCENDANT = 1;
+		
+		public static int ordreTri;	
+
+		static class Noeud{
+	      
+			// numero de sequence
+			int nseq; 
+	        Noeud suivant;
+	       
+	        Noeud(int v,Noeud t){
+	        	
+	        	nseq=v;
+	        	
+	        	suivant=t;
+	        	}
+	    }
+	 
+	    // tri par insertion 
+	    static Noeud tri(Noeud a){
+	      
+	    	Noeud res=new Noeud(0,null); 
+	        Noeud t,u,x;
+	       
+	        while(a.suivant!=null){
+	           
+	        	// Les elements a inserer
+	        	t=a.suivant; 
+	            
+	        	u=t.suivant;
+	           
+	        	// supprimer cet element de la liste a
+	        	a.suivant=u;
+	            
+	            if(ordreTri == ASCENDANT){
+	            	
+	            	// chercher la place de du noeud dans la liste res
+	            	for(x=res;x.suivant!=null;x=x.suivant)
+	            		
+	            		if (x.suivant.nseq > t.nseq)break;
+	            			
+	            	// inserer t apres x	
+	            	t.suivant=x.suivant;	
+	            	x.suivant=t;
+	            	
+	            } else {
+	            	
+	            	// chercher la place de du noeud dans la liste res
+	            	for(x=res;x.suivant!=null;x=x.suivant)
+	            		
+	            		if (x.suivant.nseq < t.nseq)break;
+	            			
+	            	// inserer t apres x
+	                x.suivant=t.suivant;
+	            	t=x.suivant;            	
+	            }
+	            
+	        }
+	        return(res);
+	    }   
+}

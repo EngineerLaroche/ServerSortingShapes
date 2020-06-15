@@ -1,0 +1,70 @@
+
+public class DemarrageTri {
+
+	private static AbstraitMecanismesTri abstraitMecanismes;
+	
+	//Ordre de tri
+	private static final String 
+	CROISSANT = "Croissant",
+	DECROISSANT = "Décroissant";
+
+	private static final String
+	SEQ_CROISSANT = "Numéro_Séquence_C",
+	SEQ_DECROISSANT = "Numéro_Séquence _D",
+	AIRE_CROISSANT = "Aire _Forme_C",
+	AIRE_DECROISSANT = "Aire _Forme_D",
+	FORME_CROISSANT = "Type_Forme_C",
+	FORME_DERCROISSANT = "Type_Forme_D",
+	ORDRE_DISTANCE = "Distance_Forme_C";
+
+	private static Noeud noeud, suivant, echange;
+
+	public DemarrageTri(){
+		
+		//On s'assure qu'il n'y a aucune références à d'autre algorithme de tri
+		abstraitMecanismes = null;
+	}
+
+	public static AbstraitMecanismesTri selectionTri(String selectionOrdreTri){
+
+		switch(selectionOrdreTri) { 
+
+		case SEQ_CROISSANT : 
+
+			abstraitMecanismes = new AlgorithmeTriSequence(noeud, CROISSANT, suivant, echange);
+			break;
+
+		case SEQ_DECROISSANT :
+
+			abstraitMecanismes = new AlgorithmeTriSequence(noeud, DECROISSANT, suivant, echange);
+			break;				
+
+		case AIRE_CROISSANT :
+
+			abstraitMecanismes = new AlgorithmeTriAire(noeud, CROISSANT, suivant, echange);
+			break;
+
+		case AIRE_DECROISSANT :
+
+			abstraitMecanismes = new AlgorithmeTriAire(noeud, DECROISSANT, suivant, echange);
+			break;
+
+		case FORME_CROISSANT :
+
+			abstraitMecanismes = new AlgorithmeTriForme(noeud, CROISSANT, suivant, echange);
+			break;
+
+		case FORME_DERCROISSANT :
+
+			abstraitMecanismes = new AlgorithmeTriForme(noeud, DECROISSANT, suivant, echange);
+			break;
+
+		case ORDRE_DISTANCE :
+
+			abstraitMecanismes = new AlgorithmeTriDistance(noeud, CROISSANT, suivant, echange);
+			break;
+		}
+		
+		return abstraitMecanismes;
+	}
+}

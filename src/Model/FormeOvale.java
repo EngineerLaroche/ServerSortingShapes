@@ -1,0 +1,105 @@
+package Model;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME OVALE
+ * 
+ * @Resumer:
+ * Creation d'un objet graphique de type ovale 2D. 
+ * On identifie la forme a l'aide d'un remplissage colore.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 20 juin 2017
+ * 
+ *******************************************************************/
+public class FormeOvale extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int rayonH, rayonV;
+
+	private static final Color VIOLET = new Color(138, 43, 226, 150);
+	
+	/********************
+	 * Constante
+	 ********************/
+	
+	private static final int NUMEROTRI = 4;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeOvale(int nseq, String nomForme, int positionX, int positionY, int rayonH, int rayonV){
+
+		//Numero de sequence et nom de la forme
+		super(nseq, nomForme, positionX, positionY, NUMEROTRI);
+		
+		this.rayonH = rayonH;
+		this.rayonV = rayonV;
+	}
+
+	/********************
+	 * Aire de la Forme
+	 ********************/
+	public  double aireForme() {
+
+		double aireForme = Math.PI * rayonH * rayonV;
+
+		return aireForme;
+	}
+
+	/********************
+	 * Espace Totale
+	 ********************/
+	public double distanceForme() {
+
+		double diametreV = 2 * rayonV;
+		double diametreH = 2 * rayonH;
+
+		if (rayonH < rayonV) {
+
+			return diametreV;
+
+		}else
+
+			return diametreH;
+	}
+
+	/*******************************************************************
+	 * @Titre: GRAPHIQUE OVALE
+	 * 
+	 * @Resumer:
+	 * Creation d'un objet ovale muni d'un couleure avec effet de transparance.
+	 * On y retrouve ensuite un rectangle pointille autour de la forme.
+	 * 
+	 * @Source:
+	 * Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * Transparance: 	http://www.java2s.com/Code/Java/2D-Graphics-GUI/Drawcanvaswithcolorandtext.htm
+	 *
+	 *******************************************************************/
+	@Override
+	public void graphiqueForme(Graphics g){
+
+		//Creation d'un objet graphique de type ovale
+		Graphics2D ovale = (Graphics2D) g;
+
+		//Creation d'un rectangle autour des dimensions maximale de la forme
+		Rectangle2D contourRectangle = new Rectangle2D.Float(getPositionX() - 1, getPositionY() - 1, rayonH + 2, rayonV + 2);
+
+		//Obtenir un cadrage pointille autour de la forme
+		ovale.setColor(Color.GRAY);
+		ovale.fill(getStroke().createStrokedShape(contourRectangle));
+
+		//Remplissage colore avec une transparance 
+		ovale.setColor(VIOLET);
+		ovale.fillOval(getPositionX(), getPositionY(), rayonH, rayonV);
+
+		//Contour colore de la forme
+		ovale.setColor(Color.MAGENTA);
+		ovale.drawOval(getPositionX(), getPositionY(), rayonH, rayonV);
+	}
+}

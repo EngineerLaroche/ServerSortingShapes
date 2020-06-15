@@ -1,0 +1,86 @@
+import java.awt.BasicStroke;
+import java.awt.Stroke;
+
+import ca.etsmtl.log.util.IDLogger;
+
+/*******************************************************************
+ * @Titre: FORMES ABSTRAITES
+ * 
+ * @Résumer:
+ * La classe abstraite est conçue de façon à être minimaliste. 
+ * L'idée est de permettre l'ajout d'options dans le cas où l'évolution 
+ * du Travail_Pratique_01 prend une tournure différente.
+ * 
+ * Pour l'instant, on retrouve seulement une variable qui garde en 
+ * mémoire le numéro de séquence associé à une forme. 
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public abstract class FormesAbstraites implements InterfaceFormes{
+
+	//Numéro de séquence d'une forme
+	protected int nseq;
+	protected String nomForme;
+
+	private int valeurX = 0;
+	private int valeurY = 0;
+
+	//Méthode statique qui permet l'ajout d'un numéro de séquence au Journal
+	IDLogger logger = IDLogger.getInstance();
+
+	/********************
+	 * Constructeurs
+	 ********************/
+	public FormesAbstraites(int nseq, String nomForme){
+
+		this.nseq = nseq;
+		this.nomForme = nomForme;
+
+		//Utilisé pour la validation 
+		logger.logID(nseq);
+	}
+	
+	//Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	public Stroke getStroke(){
+
+		float[] pointiller = { 5F, 5F };
+
+		//Paramètre pour créer la ligne de contour pointiller voulu
+		Stroke stroke = new BasicStroke( 2F, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 3F, pointiller, 0F );
+
+		return stroke;
+	}
+
+	public int getnseq() {
+		return nseq;
+	}
+
+	public String getNom() {
+		return nomForme;
+	}
+
+	public int getValeurX() {
+		
+		return valeurX;
+	}
+
+	public void setAddX(int valeurX) {
+		this.valeurX = valeurX;
+	}
+
+	public int getValeurY() {
+	
+		return valeurY;
+	}
+
+	public void setAddY(int valeurY) {
+		this.valeurY = valeurY;
+	}
+	
+	public void DeplacerForme(){
+
+		this.valeurX = valeurX + 40;
+		this.valeurY = valeurY + 40;
+	}
+}

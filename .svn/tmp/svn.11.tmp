@@ -1,0 +1,108 @@
+
+//Tomy Nguyen
+//Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+public class ListeChaine<E> {
+	
+	private FormesAbstraites formesAbstraites;
+	
+	private ListeChaine listeChaine;
+	private Noeud<E> premierNoeud;
+	private Noeud<E> dernierNoeud;
+	private int size = 0;
+	
+	public ListeChaine() {
+	}
+	
+	/**
+	 * Ajoute un nouveau objet à un emplacement précis
+	 * Le noeud original et les noeuds suivants sont décalés vers la droite (incrémenté)
+	 * @param nouveauObjet
+	 * @param index
+	 */
+	public void ajouter(E nouveauObjet, int index) {
+		if (index == 0) {
+			ajouterDebut(nouveauObjet);
+		} else if(index == size) {
+			ajouterFin(nouveauObjet);
+		} else {
+			Noeud<E> noeudPrec = premierNoeud;
+			Noeud<E> nouveauNoeud;
+			Noeud<E> noeudDeplace;
+			for (int i = 0; i < index-1; i++) {
+				noeudPrec = noeudPrec.getProchain();
+			}
+			noeudDeplace = noeudPrec.getProchain();
+			nouveauNoeud = new Noeud<E>(nouveauObjet, noeudDeplace.getProchain());
+			noeudPrec.setProchain(nouveauNoeud);
+		}
+		size++;
+		
+	}
+	
+	public void ajouterFin(E nouveauObjet) {
+		
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+		} else {
+			dernierNoeud.setProchain(new Noeud<E>(nouveauObjet));
+			dernierNoeud = dernierNoeud.getProchain();
+		}
+		size++;
+	}
+	
+	public void ajouterDebut(E nouveauObjet) {
+		
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+			
+		} else {
+			premierNoeud = new Noeud<E>(nouveauObjet, premierNoeud);
+		}
+		size++;
+	}
+	
+	public void enlever(int index) {
+		
+		if (premierNoeud == dernierNoeud) {
+			premierNoeud = null;
+			dernierNoeud = null;
+		} else {
+			Noeud<E> noeudPrec = getNoeud(index - 1);
+			Noeud<E> noeudEnleve = getNoeud(index);
+			
+			if (noeudEnleve == dernierNoeud) {
+				dernierNoeud = noeudPrec;
+			}
+			
+			if (noeudEnleve == premierNoeud) {
+				premierNoeud = noeudEnleve.getProchain();
+			} else {
+				noeudPrec.setProchain(noeudEnleve.getProchain());
+			}
+		}
+		
+		size--;
+	}
+	
+	public E getElement(int index) {
+		
+		Noeud<E> noeud = getNoeud(index);
+		return noeud.getContenu();
+	}
+	
+	public Noeud<E> getNoeud(int index) {
+	
+		Noeud<E> noeud = premierNoeud;
+		
+		for (int i = 0; i < index; i++) {
+			noeud = noeud.getProchain();
+		}
+		return noeud;
+	}
+	
+	public int getSize() {
+		return size;
+	}
+}

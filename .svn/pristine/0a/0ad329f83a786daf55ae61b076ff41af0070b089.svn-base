@@ -1,0 +1,156 @@
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JFrame;
+
+/*******************************************************************
+ * @Titre_Classe: FENÊTRE PRINCIPALE
+ * 
+ * @Résumer: 
+ * Cette classe représente la fenêtre principale de l'application
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 27 mai 2017 
+ * 
+ *******************************************************************/ 
+public class FenetrePrincipale extends JFrame implements PropertyChangeListener{
+
+	/***************************
+	 * Classes instanciées
+	 ***************************/
+	
+	private MenuFenetre menuFenetre;
+	private static FenetreFormes fenetreFormes;
+
+	/********************
+	 * Constantes
+	 ********************/
+
+	private static final long serialVersionUID = -1210804336046370508L;
+
+	//On donne respectivement le nombre maximum de formes et les dimensions de la fenêtre. 
+	private static final int 
+	MAX_FORMES = 10,
+	WIDTH = 500,
+	HEIGHT = 500;
+	
+	private static AbstraitesFormes[] formesAbstraites;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FenetrePrincipale(){}
+	
+	public FenetrePrincipale(CommBase commBase){
+		
+		menuFenetre = new MenuFenetre(commBase);
+		fenetreFormes = new FenetreFormes();
+		
+		formesAbstraites = new AbstraitesFormes[MAX_FORMES];
+
+		//Ajuste la dimension de la fenetre principale selon ses composants
+		this.pack();
+
+		//Donne une dimension de départ à la fenêtre
+		this.setSize(WIDTH,HEIGHT);
+
+		//Rend la fenetre principale visible.
+		this.setVisible(true); 
+
+		//Regroupement des composants graphiques  
+		this.setLayout(new BorderLayout());
+
+		//Ajout du menu à la fenêtre principale
+		this.add(menuFenetre, BorderLayout.NORTH);
+
+		//Ajout de la fenetre de formes à la fenêtre principale
+		this.add(fenetreFormes, BorderLayout.CENTER); 
+
+		//Fermeture de l'application à la fermeture de la fenêtre
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Donne un titre à la fenêtre
+		this.setTitle("Fenêtre Principale");
+	}
+
+	/*******************************************************************
+	 * @Titre: CHANGEMENT DE PROPRIÉTÉ
+	 * 
+	 * @Résumer:
+	 * Appelée lorsque le sujet lance "firePropertyChanger"
+	 * 
+	 *******************************************************************/
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+
+		if(arg0.getPropertyName().equals("ENVOIE-TEST")){
+
+			//Ajout d'une forme à la fenêtre en envoyant en paramètre la classe abstraite
+			fenetreFormes.ajoutforme((AbstraitesFormes) arg0.getNewValue());
+
+		} else if(arg0.getPropertyName().equals("LANCERTRI")) {
+			
+			lancerTri();
+
+		} else if(arg0.getPropertyName().equals("AFFICHAGE")) {
+			
+			makeTable();
+			
+			fenetreFormes.toBePaint(formesAbstraites);
+			
+			repaint();
+
+		} else if(arg0.getPropertyName().equals("FLUSH")){
+			
+			System.out.println("I got Flush ...");
+			
+			flushPass();
+			
+		} else if(arg0.getPropertyName().equals("RETRI")){
+			
+			lancerTri();
+
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	public void makeTable(){
+		
+		Maillon now = fenetreFormes.getFirst();
+		
+		formesAbstraites[0] = now.getForme();
+
+		for(int i = 1; i < MAX_FORMES; i++){
+			
+			now = now.getProchain();
+			
+			formesAbstraites[i] = now.getForme();
+		}
+	}	
+	
+	
+	/**
+	 * But ultime : Se rendre ici pour lancer un trie ! Possibilite par CommBase, sinon Firepoupper
+	 */
+	public void lancerTri(){
+		
+		//ListeChaine.tri(fenetreFormes.getFirst(), menuFenetre.getOrdre());
+		
+		makeTable();
+		
+		fenetreFormes.toBePaint(formesAbstraites);
+		
+		repaint();
+	}
+	
+	public static void flushPass() { //passe droit pour flusher ce qui est dans fenetreFormes
+		
+		fenetreFormes.flusherforme();
+	}
+	
+}

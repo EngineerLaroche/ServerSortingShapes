@@ -1,0 +1,83 @@
+
+//Source: http://www.liafa.jussieu.fr/~hf/verif/ens/an08-09/IF2/Cours11/C101.htm
+public class TypeTri {
+
+	public static final int ASCENDANT = 0;
+	public static final int DESCENDANT = 1;
+
+	public static int ordreTri;		
+	private static int size = 10;
+	private static boolean invert;
+
+	public TypeTri(){}
+
+	public static void triSequence(ListeChaine listeChaine){
+
+	}
+
+	public static void triAire(ListeChaine listeChaine, int ordreTri) {
+
+		ListeChaine liste = listeChaine;
+		ListeChaine suivant, xEchange = null;		
+
+		while(liste.getProchain() != null){
+
+			FormesAbstraites checkform = liste.getForme(); 
+			FormesAbstraites checknext = liste.getProchain().getForme();
+
+			suivant = listeChaine.getProchain(); 
+
+			if(ordreTri == ASCENDANT){
+				
+				// chercher la place du noeud dans la liste 
+				for(checkform = liste.getForme(); checknext == null; checkform=liste.getProchain().getForme()) {
+
+					if(checknext.aireForme() > checkform.aireForme()){
+
+						xEchange = listeChaine(checknext,suivant);
+						suivant = listeChaine(checkform,liste);   
+						liste = xEchange; 
+					}
+				}
+				liste = listeChaine;
+
+				for(int x = 0; x < 9; x++){
+
+					System.out.println(liste.getForme().aireForme());
+					liste = liste.getProchain();
+				}
+
+			} else {
+
+				for(checkform = liste.getForme(); checknext == null; checkform=liste.getProchain().getForme()) {
+
+					if (checknext.aireForme() < checkform.aireForme()){
+
+						xEchange = listeChaine(checkform,liste);
+						liste = listeChaine(checknext,suivant);   
+						suivant = xEchange; 
+					} 
+				}
+				liste = listeChaine;
+
+				for(int x = 0; x < 9; x++){
+					System.out.println(liste.getForme().aireForme());
+					liste = liste.getProchain();
+				}
+			}
+		}
+	}
+
+	public static void triType(ListeChaine listeChaine) {
+
+	}
+
+	public static void triDistance(ListeChaine listeChaine) {
+
+	}
+
+	private static ListeChaine listeChaine(FormesAbstraites prochainesForme, ListeChaine listeChaine) {
+
+		return null;
+	}
+}

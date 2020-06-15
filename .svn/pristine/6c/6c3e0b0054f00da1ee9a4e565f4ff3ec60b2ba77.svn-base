@@ -1,0 +1,201 @@
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JFrame;
+
+/*******************************************************************
+ * @Titre_Classe: FENÊTRE PRINCIPALE
+ * 
+ * @Résumer: 
+ * Cette classe représente la fenêtre principale de l'application
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 27 mai 2017 
+ * 
+ *******************************************************************/ 
+public class FenetrePrincipale extends JFrame implements PropertyChangeListener{
+
+	/***************************
+	 * Classes instanciées
+	 ***************************/
+	
+	private MenuFenetre menuFenetre;
+	private static FenetreFormes fenetreFormes;
+
+	/********************
+	 * Constantes
+	 ********************/
+
+	private static final long serialVersionUID = -1210804336046370508L;
+
+	//On donne les dimensions de la fenêtre. 
+	private static final int 
+	WIDTH = 500,
+	HEIGHT = 500;
+	
+	
+	
+	
+	
+	
+	private static FormesAbstraites[] toBePrint = new FormesAbstraites[10];
+	
+	
+	
+	
+	
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FenetrePrincipale(){}
+	
+	public FenetrePrincipale(CommBase commBase){
+		
+		menuFenetre = new MenuFenetre(commBase);
+		fenetreFormes = new FenetreFormes();
+
+		//Ajuste la dimension de la fenetre principale selon ses composants
+		this.pack();
+
+		//Donne une dimension de départ à la fenêtre
+		this.setSize(WIDTH,HEIGHT);
+
+		//Rend la fenetre principale visible.
+		this.setVisible(true); 
+
+		//Regroupement des composants graphiques  
+		this.setLayout(new BorderLayout());
+
+		//Ajout du menu à la fenêtre principale
+		this.add(menuFenetre, BorderLayout.NORTH);
+
+		//Ajout de la fenetre de formes à la fenêtre principale
+		this.add(fenetreFormes, BorderLayout.CENTER); 
+
+		//Fermeture de l'application à la fermeture de la fenêtre
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Donne un titre à la fenêtre
+		this.setTitle("Fenêtre Principale");
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * But ultime : Se rendre ici pour lancer un trie ! Possibilite par CommBase, sinon Firepoupper
+	 */
+	public void lancerTri(){
+		
+		//ListeChaine.tri(fenetreFormes.getFirst(), menuFenetre.getOrdre());
+
+		System.out.println("I Just Got SORT ! :D YUri!!");
+		makeTable();
+		fenetreFormes.toBePaint(toBePrint);
+		repaint();
+	}
+	
+	public static void flushPass() { //passe droit pour flusher ce qui est dans fenetreFormes
+		fenetreFormes.flusherforme();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	/*******************************************************************
+	 * @Titre: CHANGEMENT DE PROPRIÉTÉ
+	 * 
+	 * @Résumer:
+	 * Appelée lorsque le sujet lance "firePropertyChanger"
+	 * 
+	 *******************************************************************/
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+
+		if(arg0.getPropertyName().equals("ENVOIE-TEST")){
+
+			//Ajout d'une forme à la fenêtre en envoyant en paramètre la classe abstraite
+			fenetreFormes.ajoutforme((FormesAbstraites) arg0.getNewValue());
+
+			
+			
+			
+			
+			
+		} else if(arg0.getPropertyName().equals("LANCERTRI")) {
+			
+			lancerTri();
+
+		} else if(arg0.getPropertyName().equals("AFFICHAGE")) {
+			
+			makeTable();
+			
+			fenetreFormes.toBePaint(toBePrint);
+			
+			repaint();
+			
+/*			System.out.println("I got Print ...");
+			maillon now = fenetreFormes.getFirst();;
+//			now =
+			for(int x=0; x < 9; x++){
+				//fenetreFormes.paintComponent(g);
+//				now.getForme().methodShape(g);
+				repaint();
+				now = now.getProchain();
+			}
+			*/
+		} else if(arg0.getPropertyName().equals("FLUSH")){
+			
+			System.out.println("I got Flush ...");
+			
+			flushPass();
+			
+		} else if(arg0.getPropertyName().equals("RETRI")){
+			
+			lancerTri();
+			
+			
+			
+			
+			
+			//Permet l'affichage des formes
+			//repaint();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	public void makeTable()
+	{
+		Maillon now = fenetreFormes.getFirst();
+		
+		toBePrint[0] = now.getForme();
+
+		for(int i = 1; i < 10; i++){
+			
+			//System.out.println("NNAAAAOOOOONNNNN  : " + now.getForme());
+			
+			now = now.getProchain();
+			
+			toBePrint[i] = now.getForme();
+		}
+	}
+	
+	
+	
+	
+}

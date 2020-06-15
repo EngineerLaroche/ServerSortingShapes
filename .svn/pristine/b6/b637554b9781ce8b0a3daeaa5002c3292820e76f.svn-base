@@ -1,0 +1,22 @@
+
+public interface InterfaceMecanismesTri {
+
+	//////SECTION TEST (POUR MIEU GERER LES TYPES DE TRI
+	
+
+//	public abstract int getSequenceTri();
+//	
+//	public abstract double getAirTrie();
+//	
+//	public abstract String getFormeTri();
+//	
+//	public abstract double getDistanceTri();
+	
+	
+	
+	//public abstract String getTypeOrdre();
+	
+	//public abstract Noeud getChaine(FormesAbstraites formes, Noeud noeud);
+	
+	
+}

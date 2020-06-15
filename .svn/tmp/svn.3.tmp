@@ -1,0 +1,95 @@
+
+//Tomy Nguyen
+//Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+public class ListeChaine<E> {
+	
+	private FormesAbstraites formesAbstraites;
+	
+	private ListeChaine listeChaine;
+	private Noeud<E> premierNoeud;
+	private Noeud<E> dernierNoeud;
+	private int size = 0;
+	
+	public ListeChaine() {
+	}
+	
+	public void ajouterFin(E nouveauObjet) {
+		
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+		} else {
+			dernierNoeud.setProchain(new Noeud<E>(nouveauObjet));
+			dernierNoeud = dernierNoeud.getProchain();
+		}
+		size++;
+	}
+	
+	public void ajouterDebut(E nouveauObjet) {
+		
+		if (premierNoeud == null) {
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+			
+		} else {
+			premierNoeud = new Noeud<E>(nouveauObjet, premierNoeud);
+		}
+		size++;
+	}
+	
+	public void enlever(int index) {
+		
+		if (premierNoeud == dernierNoeud) {
+			premierNoeud = null;
+			dernierNoeud = null;
+		} else {
+			Noeud<E> noeudPrec = getNoeud(index - 1);
+			Noeud<E> noeudEnleve = getNoeud(index);
+			
+			if (noeudEnleve == dernierNoeud) {
+				dernierNoeud = noeudPrec;
+			}
+			
+			if (noeudEnleve == premierNoeud) {
+				premierNoeud = noeudEnleve.getProchain();
+			} else {
+				noeudPrec.setProchain(noeudEnleve.getProchain());
+			}
+		}
+		
+		size--;
+	}
+	
+	public E getElement(int index) {
+		
+		Noeud<E> noeud = getNoeud(index);
+		return noeud.getContenu();
+	}
+	
+	public Noeud<E> getNoeud(int index) {
+	
+		Noeud<E> noeud = premierNoeud;
+		
+		for (int i = 0; i < index; i++) {
+			noeud = noeud.getProchain();
+		}
+		return noeud;
+	}
+	
+	public int getSize() {
+		return size;
+	}
+	
+	//TEST !!!
+	
+	
+	public FormesAbstraites getForme() { //formes plantes quand encap dans le tri
+        return formesAbstraites;
+    }
+	
+    public ListeChaine getProchain() {
+        return listeChaine;
+    }
+
+
+}

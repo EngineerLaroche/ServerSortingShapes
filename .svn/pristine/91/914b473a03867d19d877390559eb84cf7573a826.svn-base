@@ -1,0 +1,50 @@
+
+public class DemarrageTri {
+
+	//Ordre de tri
+	private static final String CROISSANT = "Croissant";
+	private static final String DECROISSANT = "Décroissant";	
+	
+	public DemarrageTri(){}
+
+	public void selectionTri(Maillon maillon, String selectionOrdreTri){
+		
+		switch(selectionOrdreTri) { 
+
+		case "Numéro_Séquence_C" : 
+
+			AlgorithmeTriSequence triSequence_C = new AlgorithmeTriSequence(maillon, CROISSANT);
+			break;
+
+		case "Numéro_Séquence _D" :
+
+			AlgorithmeTriSequence triSequence_D = new AlgorithmeTriSequence(maillon, DECROISSANT);
+			break;				
+
+		case "Aire _Forme_C" :
+
+			AlgorithmeTriAire triAire_C = new AlgorithmeTriAire(maillon, CROISSANT);
+			break;
+
+		case "Aire _Forme_D" :
+
+			AlgorithmeTriAire triAire_D = new AlgorithmeTriAire(maillon, DECROISSANT);
+			break;
+
+		case "Type_Forme_C" :
+
+			AlgorithmeTriForme triForme_C = new AlgorithmeTriForme(maillon, DECROISSANT);
+			break;
+
+		case "Type_Forme_D" :
+
+			AlgorithmeTriForme triForme_D = new AlgorithmeTriForme(maillon, DECROISSANT);
+			break;
+
+		case "Distance_Forme_C" :
+
+			AlgorithmeTriDistance triDistance_C = new AlgorithmeTriDistance(maillon, DECROISSANT);
+			break;
+		}
+	}
+}

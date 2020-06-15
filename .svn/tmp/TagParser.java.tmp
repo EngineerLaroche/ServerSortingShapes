@@ -1,0 +1,146 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/*******************************************************************
+ * @Titre_Classe: TAG PARSER
+ * 
+<<<<<<< .mine
+ * @Resumer: 
+ * Permet de decomposer les chaînes de caractères recue par le
+ * ServeurForme a l'aide de certaines informations comme le numero de 
+ * sequence d'une forme par exemple. 
+||||||| .r103
+=======
+ * @Rï¿½sumer: 
+ * Permet de dï¿½composer les chaï¿½nes de caractï¿½res reï¿½ue par le
+ * ServeurForme ï¿½ l'aide de certaines informations comme le numï¿½ro de 
+ * sï¿½quence d'une forme par exemple. 
+>>>>>>> .r107
+ * 
+ * @SOurce:
+ * Expressions rationnelles: https://cours.etsmtl.ca/log121/private/lab/lab1/expressionsRationnelles.shtml
+ * Syntaxe: http://www.commentcamarche.net/php/phpreg.php3
+ * 
+ * @Auteur: Alexandre Laroche et Tomy Nguyen
+ * @Date: 31 mai 2017 
+ * 
+ *******************************************************************/ 
+public final class TagParser {
+	
+	/********************
+	 * Constante
+	 ********************/
+
+<<<<<<< .mine
+	//Represente un ensemble de caractère permettent d'identifer un argument.
+	//Espaces ajoutees entre chaque pour aider a la detection du numero de sequence et autre.
+||||||| .r103
+=======
+	//Reprï¿½sente un ensemble de caractï¿½re permettent d'identifer un argument.
+	//Espaces ajoutï¿½es entre chaque pour aider  ï¿½ la dï¿½tection du numï¿½ro de sï¿½quence.
+>>>>>>> .r107
+	private static String 
+	numeroSeq = null,
+	identiteForme = null,
+	dimensionsForme = null;
+	private static final String
+	CARACTERE_PATTERN = "(.*) <(.*)> (.*) </\\2>";
+
+
+	/*******************************************************************
+	 * @Titre: MAIN PATTERN
+	 * 
+<<<<<<< .mine
+	 * @Resumer:
+	 * Recupere l'information en fonction des caracteres speciaux et
+	 * retourne l'information vers CommBase pour la creation de formes.
+||||||| .r103
+=======
+	 * @Rï¿½sumer:
+>>>>>>> .r107
+	 *
+	 *******************************************************************/
+	public static final String[] main(String informationForme) {
+
+		Pattern pattern = Pattern.compile(CARACTERE_PATTERN); 
+
+		//Retourne l'information complï¿½te d'une forme 
+		return findTag(pattern, informationForme);
+	}
+
+	/*******************************************************************
+	 * @Titre: FIND TAG
+	 * 
+<<<<<<< .mine
+	 * @Resumer:
+	 * Condense l'information d'une forme a un endroit.
+	 * Permet d'identifier/confirmer une correspondance avec une forme.
+||||||| .r103
+=======
+	 * @Rï¿½sumer:
+>>>>>>> .r107
+	 * 
+	 *******************************************************************/
+	private static String[] findTag(Pattern pattern, String informationForme) {
+
+<<<<<<< .mine
+		//Liste qui garde en memoire toute l'information concernant une forme
+||||||| .r103
+=======
+		//Liste qui garde en mï¿½moire toute l'information concernant une forme
+>>>>>>> .r107
+		String[] descriptionCompleteForme = new String[3];
+
+		//Identification correspondance avec une forme abstraite
+		Matcher matcher = pattern.matcher(informationForme);
+
+<<<<<<< .mine
+		//Si un resultat est identifie, la primitive "resultat" tombe a true.
+||||||| .r103
+=======
+		//Si un rï¿½sultat est identifiï¿½, la primitive "resultat" tombe ï¿½ true.
+>>>>>>> .r107
+		boolean resultat = matcher.find();
+
+<<<<<<< .mine
+		//On valide le resultat (true)
+||||||| .r103
+=======
+		//On valide le rï¿½sultat (true)
+>>>>>>> .r107
+		if (resultat == true) {
+
+			numeroSeq = matcher.group(1);
+			identiteForme = matcher.group(2);
+			dimensionsForme = matcher.group(3);
+			
+<<<<<<< .mine
+			System.out.println("\n*****************************\nPARAMÈTRES FORME:  " + matcher.group(2) + "\n*****************************");
+			System.out.println("Numero de sequence: " + matcher.group(1) + "\nData: " + matcher.group(3) + "\n");
+||||||| .r103
+=======
+			System.out.println("\n*****************************\nPARAMï¿½TRES FORME:  " + matcher.group(2) + "\n*****************************");
+			System.out.println("Numï¿½ro de sï¿½quence: " + matcher.group(1) + "\nData: " + matcher.group(3) + "\n");
+>>>>>>> .r107
+
+		}
+
+<<<<<<< .mine
+		//Insertition des elements qui composent l'identte d'une forme dans une liste
+||||||| .r103
+=======
+		//Insertition des ï¿½lï¿½ments qui composent l'identtï¿½ d'une forme dans une liste
+>>>>>>> .r107
+		descriptionCompleteForme[0] = numeroSeq;
+		descriptionCompleteForme[1] = identiteForme; 
+		descriptionCompleteForme[2] = dimensionsForme;
+
+<<<<<<< .mine
+		//Retourne l'identite d'une forme et ses paramètres
+||||||| .r103
+=======
+		//Retourne l'identitï¿½ d'une forme et ses paramï¿½tres
+>>>>>>> .r107
+		return descriptionCompleteForme;
+	}	
+}

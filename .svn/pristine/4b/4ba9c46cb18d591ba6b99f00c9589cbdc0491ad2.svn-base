@@ -1,0 +1,36 @@
+
+/******************************************************
+
+@Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+
+*******************************************************/
+
+
+public class Maillon{
+	
+	// Objet et Liste comme args. Le dernier est null.
+	private final FormesAbstraites forme; //j'ai mis forme final car elle ne sera jamais change
+	private Maillon prochain;
+	
+	public Maillon(FormesAbstraites f) {
+		
+		this(f, null);
+	}
+
+	public Maillon(FormesAbstraites f, Maillon n){ //f pour forme n pour next
+		this.forme = f;
+		this.prochain = n;
+	}
+	
+    public FormesAbstraites getForme() { //formes plantes quand encap dans le tri
+        return forme;
+    }
+	
+    public Maillon getProchain() {
+        return prochain;
+    }
+
+    public void setProchain(Maillon n) {
+        prochain = n;
+    }
+}

@@ -1,0 +1,78 @@
+import ca.etsmtl.log.util.IDLogger;
+
+/*******************************************************************
+ * @Titre: FORMES ABSTRAITES
+ * 
+ * @Résumer:
+ * La classe abstraite est conçue de façon à être minimaliste. 
+ * L'idée est de permettre l'ajout d'options dans le cas où l'évolution 
+ * du Travail_Pratique_01 prend une tournure différente.
+ * 
+ * Pour l'instant, on retrouve seulement une variable qui garde en 
+ * mémoire le numéro de séquence associé à une forme. 
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public abstract class FormesAbstraites implements InterfaceFormes{
+
+	//Numéro de séquence d'une forme
+	protected int nseq;
+	protected String nomForme;
+
+	private int valeurX = 0;
+	private int valeurY = 0;
+
+	//Méthode statique qui permet l'ajout d'un numéro de séquence au Journal
+	IDLogger logger = IDLogger.getInstance();
+
+	/********************
+	 * Constructeurs
+	 ********************/
+	public FormesAbstraites(int nseq, String nomForme){
+
+		this.nseq = nseq;
+		this.nomForme = nomForme;
+
+		//Utilisé pour la validation 
+		logger.logID(nseq);
+	}
+
+	public int getnseq() {
+		return nseq;
+	}
+
+	public void setnseq(int nseq) {
+		this.nseq = nseq; //ne devrait jamais etre utilise mais wtv
+	}
+
+	public String getNom() {
+		return nomForme;
+	}
+
+	public void setNom(String nomForme) {
+		this.nomForme = nomForme;
+	}
+
+	public int getAddX() {
+		return valeurX;
+	}
+
+	public void setAddX(int valeurX) {
+		this.valeurX = valeurX;
+	}
+
+	public int getAddY() {
+		return valeurY;
+	}
+
+	public void setAddY(int valeurY) {
+		this.valeurY = valeurY;
+	}
+
+	public void DeplacerForme(){
+
+		this.valeurX = valeurX + 40;
+		this.valeurY = valeurY + 40;
+	}
+}

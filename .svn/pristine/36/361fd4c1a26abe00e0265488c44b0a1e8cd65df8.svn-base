@@ -1,0 +1,7 @@
+
+public class AlgorithmeTriDistance {
+
+public AlgorithmeTriDistance(Maillon premierNoeud, String ordreTri){
+		
+	}
+}

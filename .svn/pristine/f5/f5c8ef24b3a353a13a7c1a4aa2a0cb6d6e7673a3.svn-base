@@ -1,0 +1,79 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME CERCLE
+ * 
+ * @Résumer: 
+ * Création d'un objet graphique de type cercle 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017 
+ *******************************************************************/
+
+public class FormeCercle extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int centreX, centreY, rayon;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeCercle(int nseq, String nomForme, int centreX, int centreY, int rayon){
+
+		//Numéro de séquence de la forme
+		super(nseq, nomForme);
+
+		this.centreX = centreX;
+		this.centreY = centreY;
+		this.rayon = rayon;
+	}
+
+	public  double espaceForme() {
+
+		double distanceMax =  2 * rayon;
+
+		return distanceMax;
+	}
+
+	public  double aireForme( ) {
+
+		double airForme = Math.PI * (rayon ^ 2);
+
+		return  airForme;
+	}
+
+	/********************
+	 * Graphics 
+	 ********************/
+	@Override
+	public void graphiqueForme(Graphics g){
+
+		Graphics2D cercle = (Graphics2D) g;
+
+		Rectangle2D contourRectangle = new Rectangle2D.Float( getAddX(), getAddY(),rayon,rayon );
+		
+		float[] dash = { 5F, 5F };
+		
+		Stroke dashedStroke = new BasicStroke( 2F, BasicStroke.CAP_SQUARE,
+				BasicStroke.JOIN_MITER, 3F, dash, 0F );
+
+		//Remplissage coloré de la forme
+		cercle.setColor(Color.BLUE);
+		cercle.fill(dashedStroke.createStrokedShape(contourRectangle));
+		
+		cercle.fillOval(getAddX(), getAddY(), rayon, rayon);
+		//cercle.fillOval(centreX, centreY, (rayon * 2), (rayon * 2));
+
+		//Contour noir aide à identifier une forme qui emboite une autre.
+//		cercle.setColor(Color.BLACK);
+//		cercle.drawOval(centreX, centreY, (rayon * 2), (rayon * 2));
+	}
+}

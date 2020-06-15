@@ -1,0 +1,290 @@
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.beans.PropertyChangeListener;
+import javax.swing.SwingWorker;
+
+/*******************************************************************
+ * @Titre_Classe: BASE COMMUNICATION
+ * 
+ * @Résumer: 
+ * Fourni les outils au support de la communication entre le client et 
+ * le serveur via un fil d'exécution parallèle.
+ * 
+ * La création d'un pont (nom Hote et numero port), le démarrage, l'arrêt 
+ * et l'activité de la communication sont au rendez-vous.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 22 mai 2017 
+ *******************************************************************/ 
+public class CommBase implements WindowListener {
+
+	/***************************
+	 * Classes instanciées
+	 ***************************/
+
+	private SwingWorker threadComm;
+	private PropertyChangeListener listener;
+
+	private FenetreInput fenetreInput;
+	private CommunicationServeur communicationServeur; 
+
+	/********************
+	 * Constantes
+	 ********************/
+
+	//Donne un délai de 1000 ms = 1 sec
+	private final int DELAI = 1000; 
+
+	private final int MAX_FORMES = 10;
+
+	/********************
+	 * Variables
+	 ********************/ 
+
+	//Démontre l'activité de l'application (actif ou non)
+	private boolean estActif = false; 
+
+	/********************
+	 * Constructeur
+	 ********************/ 
+	public CommBase(){
+
+		listener = null;
+		threadComm = null;
+		communicationServeur = null; 
+	}
+
+	/*************************************************************************
+	 * @Titre: ECOUTEUR CHANGEMENT
+	 * 
+	 * @Résumer:
+	 * Definir le recepteur de l'information recue dans la communication 
+	 * avec le serveur. listener sera alertee lors de l'appel de 
+	 * "firePropertyChanger" par le SwingWorker.
+	 * 
+	 *************************************************************************/
+	public void setPropertyChangeListener(PropertyChangeListener listener){
+
+		this.listener = listener;
+	}
+
+	/*************************************************************************
+	 * @Titre: DÉMARRAGE COMMUNICATION
+	 * 
+	 * @Résumer:
+	 * On demande à l'utilisateur d'entrer les paramètres de connexion et 
+	 * on vérifie ensuite le numéro de port ainsi que l'activité du ServeurForme
+	 * pour s'assurer que tout est en ordre. On procède ensuite à la 
+	 * création d'un pond de communication avec le ServeurForme.
+	 * 
+	 * @Source 
+	 * JOptionPane Alerte:	https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+	 * 
+	 *************************************************************************/
+	public void start(){
+
+		//Démarrage de la fenêtre qui demande l'hote et le numéro de port
+		fenetreInput = new FenetreInput();
+
+		//Si on ne ferme pas la fenêtre qui demande l'information pour créer la connexion
+		if(fenetreInput.getAnnulationConnexion() != true){
+
+			//Création d'un pond de communication avec le ServeurForme à partir des paramètres entrées
+			communicationServeur = new CommunicationServeur(fenetreInput.getNomHote(), fenetreInput.getNumeroPort());
+
+			//Tant que la communication avec le serveur échoue (Socket null)
+			while(communicationServeur.getSocketTCP() == null){
+
+				//Affiche un message d'erreur qui concerne la connexion au serveur. Doit appuyer sur "OK"
+				fenetreInput.fenetreErreurConnexion();
+
+				//Nouvelle tentative de connexion pour l'utilisateur
+				fenetreInput = new FenetreInput();
+
+				//Si on ne ferme pas la fenêtre qui demande l'information pour créer la connexion
+				if(fenetreInput.getAnnulationConnexion() != true){
+
+					//Création d'un pond de communication avec le ServeurForme à partir des paramètres entrées
+					communicationServeur = new CommunicationServeur(fenetreInput.getNomHote(), fenetreInput.getNumeroPort());
+				}
+				//si on ferme la fenêtre, on cesse la demande d'information pour réparer la connexion
+				else{
+
+					//Met fin à la fenêtre JOptionPane
+					return;
+				}
+			}
+
+			System.out.println("\n*****************************\nPARAMÈTRE DE CONNEXION\n*****************************");
+			System.out.println("Nom de l'hôte: " + fenetreInput.getNomHote());	
+			System.out.println("Numéro de port: " + fenetreInput.getNumeroPort());
+
+			//Démarrage de la communication entre le client et le serveur
+			creerCommunication();
+
+		}
+	}
+
+	/*************************************************************************
+	 * @Titre: ARRÊT COMMUNICATION
+	 * 
+	 * @Résumer:
+	 * Lorsque l'application est ouverte et que la méthode est appelée, 
+	 * on procède à l'arrête de la communication.
+	 * 
+	 *************************************************************************/
+	public void stop(){
+
+		if(threadComm != null)
+
+			threadComm.cancel(true); 
+
+		estActif = false;
+
+		communicationServeur.requeteArret();
+
+		System.out.println("\n*****************************\nFERMETURE CONNEXION\n*****************************");
+		System.out.println("Arrêt complète de la communication \nentre client et serveur "
+				+ "pour\n<" + fenetreInput.getNomHote() + "> sur le port " + fenetreInput.getNumeroPort());
+	}
+
+	/*************************************************************************
+	 * @Titre: CREATION COMMUNICATION
+	 * 
+	 * @Résumer:
+	 * Utilisation du SwingWorker.
+	 * Créer le nécessaire pour la communication au serveur
+	 * 
+	 *************************************************************************/
+	protected void creerCommunication(){		
+
+		// Cree un fil d'execusion parallele au fil courant
+		threadComm = new SwingWorker(){
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				
+				firePropertyChange("FLUSH", null, null);
+
+				System.out.println("\n*****************************\nCOMMUNICATION CLIENT-SERVEUR\n*****************************");
+				System.out.println("Le fils d'execution parallele est lancé");
+
+				//On communique avec le ServeurFormes dans cette boucle
+				for(int i = 0; i < MAX_FORMES; i++){
+
+					Thread.sleep(DELAI);
+
+					//On alerte l'observateur 
+					if(listener != null) {
+
+						//Garde en mémoire une forme identifié par TagParser
+						String[] reponse = TagParser.main(communicationServeur.requeteForme());
+
+						//On déclanche le processus de création de formes avec du data formes en paramètres
+						ConceptionFormes.structureForme(reponse);
+
+						//On reçoit la conception d'une nouvelle forme 
+						FormesAbstraites formesAbstraites = ConceptionFormes.formationFormes();
+
+						firePropertyChange("ENVOIE-TEST", null, (Object) formesAbstraites);
+
+					}
+				}
+
+				//NON FINI !!!
+			
+				//stop(); 
+
+				firePropertyChange("LANCERTRI", null, null);
+
+				firePropertyChange("AFFICHAGE", null, null);
+			
+				if(MenuFenetre.getRelancerTri() == true) {
+					
+					firePropertyChange("RETRI", null, null);
+					
+				}
+				return null;
+			}
+		};
+
+		if(listener != null)
+
+			// "propertyChange" sera appelé lorsque  le SwinkWorker invoque "firePropertyChange" 		
+			threadComm.addPropertyChangeListener(listener); 
+
+		// Lance le fil d'execution parallele.
+		threadComm.execute(); 
+
+		estActif = true;
+	}
+
+	/*************************************************************************
+	 * @Titre: GET ACTIVITÉ
+	 * 
+	 * @Résumer:
+	 * Lorsque la méthode est appelée, on rourne le fil d'execution 
+	 * parallele de façon à être actif.
+	 * 
+	 *************************************************************************/
+	public boolean getActivite(){
+
+		return estActif;
+	}
+
+	/*************************************************************************
+	 * @Titre: LISTENER FERMETURE FENÊTRE
+	 * 
+	 * @Résumer:
+	 * Lorsque l'utilisateur ferme la fenêtre, on procède à l'arrêt de la 
+	 * communication entre le client et le serveur pour éviter les problèmes
+	 * de connexions.
+	 * 
+	 *************************************************************************/
+	@Override
+	public void windowClosing(WindowEvent e) {
+
+		//Si la communication avec le serveur est en cours
+		if (communicationServeur != null) {
+
+			//On ferme l'activité (false) par précaution
+			estActif = false;
+
+			//On demande l'arrêt de la communication
+			communicationServeur.requeteArret();
+
+			System.out.println("\n*****************************\nFERMETURE FENÊTRE\n*****************************");
+			System.out.println("Interruption de la connexion pour <" + fenetreInput.getNomHote() + "> sur le port " + fenetreInput.getNumeroPort() + "\n");
+		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+}

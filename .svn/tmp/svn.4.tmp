@@ -1,0 +1,94 @@
+
+//Tomy Nguyen
+//Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+public class ListeChaine<E> {
+
+	private FormesAbstraites formesAbstraites;
+
+	private ListeChaine listeChaine;
+	
+	//Non fini !! Mais presque....
+	
+	private Noeud<E> 
+	premierNoeud,
+	insererNoeud,
+	suivantNoeud,
+	actuelNoeud,
+	dernierNoeud;
+
+	private int nombreFormes;
+
+	public ListeChaine() {
+
+		premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = null;
+
+		nombreFormes++;
+	}
+
+	public void ajouterDebut(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+			
+			premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = new Noeud<E>(nouveauObjet, null);
+
+		} else {
+
+			premierNoeud = new Noeud<E>(nouveauObjet, premierNoeud);
+			
+			actuelNoeud = premierNoeud;
+		}
+		
+		nombreFormes++;
+	}
+
+	public void ajouterFin(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+
+			premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = new Noeud<E>(nouveauObjet, null);
+			//dernierNoeud = premierNoeud;
+		} else {
+
+			dernierNoeud.setProchain(new Noeud<E>(nouveauObjet));
+			dernierNoeud = dernierNoeud.getProchain();
+		}
+	}
+
+	public void enlever(int index) {
+
+		Noeud<E> noeudPrec = premierNoeud;
+		Noeud<E> noeudEnleve;
+
+		noeudPrec = getNoeud(index-1);
+
+		noeudEnleve = noeudPrec.getProchain();
+		noeudPrec.setProchain(noeudEnleve.getProchain());
+	}
+
+	public E getElement(int index) {
+
+		Noeud<E> noeud = getNoeud(index);
+		return noeud.getContenu();
+	}
+
+	public Noeud<E> getNoeud(int index) {
+
+		Noeud<E> noeud = premierNoeud;
+
+		for (int i = 0; i < index; i++) {
+			noeud = noeud.getProchain();
+		}
+		return noeud;
+	}
+
+	//TEST !!!
+
+
+//	public FormesAbstraites getForme() { //formes plantes quand encap dans le tri
+//		return formesAbstraites;
+//	}
+//
+//	public ListeChaine getProchain() {
+//		return listeChaine;
+//	}
+}

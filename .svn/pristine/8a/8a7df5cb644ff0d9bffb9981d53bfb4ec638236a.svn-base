@@ -1,0 +1,55 @@
+
+public class AlgorithmeTriDistance extends AbstraitMecanismesTri{
+
+	private Noeud suivant, echange;
+	
+	public AlgorithmeTriDistance(){
+
+		suivant = echange = null;
+	}
+
+	public AlgorithmeTriDistance(Noeud noeud, String ordreTri, Noeud suivantForme, Noeud echangeForme){
+
+		super(noeud, ordreTri);
+
+		this.suivant = suivantForme;
+		this.echange = echangeForme;	
+
+		while(getNoeud().getProchain() != null){
+			
+			FormesAbstraites formesAbstraites = (FormesAbstraites) getNoeud().getContenu(); 
+			FormesAbstraites formesSuivantes = (FormesAbstraites) getNoeud().getProchain().getContenu();
+			
+			suivant = getNoeud().getProchain(); 
+
+			if(ordreTri.equals(getCroissant())){
+				
+				// chercher la place du noeud dans la liste 
+				for(formesAbstraites = (FormesAbstraites) getNoeud().getContenu();
+						formesSuivantes == null;
+						formesAbstraites = (FormesAbstraites) getNoeud().getProchain().getContenu())
+					
+					if(formesSuivantes.distanceForme() > formesAbstraites.distanceForme()){
+						
+						echange = getChaine(formesSuivantes,suivant);
+						suivant = getChaine(formesAbstraites,getNoeud());   
+						setNoeud(echange); 
+					}
+
+			} else {
+			
+				for(formesAbstraites = (FormesAbstraites) getNoeud().getContenu();
+						formesSuivantes == null;
+						formesAbstraites = (FormesAbstraites) getNoeud().getProchain().getContenu())
+					
+					if (formesSuivantes.distanceForme() < formesAbstraites.distanceForme()){
+						
+						echange = getChaine(formesAbstraites, getNoeud());
+						setNoeud(getChaine(formesSuivantes,suivant));   
+						suivant = echange; 
+					} 
+			}
+		} 
+	}
+}
+

@@ -1,0 +1,109 @@
+/******************************************************************
+ *																  * 
+ *@Institution: ï¿½cole de Technologies Supï¿½rieur					  *
+ *															      *
+ ******************************************************************															  
+ *																  *
+<<<<<<< .mine
+ *@Évaluation:  	Travail pratique 02							  *
+||||||| .r103
+=======
+ *@Evaluation:  	Travail pratique 02							  *
+>>>>>>> .r107
+ *@Source_Fichier:  Squelette-lab1-jdk1p6.zip					  *
+ *																  *
+ *@Pour: 			Mr. Dallaire Cote 							  *
+ *																  *
+<<<<<<< .mine
+ *@Auteurs: 		Alexandre Laroche et Tomy Nguyen			  *
+||||||| .r103
+=======
+ *@Auteur: 			Alexandre Laroche							  *
+ *@Email: 			alexandre.laroche.1@ens.etsmtl.ca			  *
+ *@Code_Acces: 		AM30750										  *
+>>>>>>> .r107
+ *																  *
+ *@Cours:			LOG121-03									  *
+ *@Date: 			25 juin 2017								  *
+ *																  *
+ *																  *			
+ *@Notes: 														  *
+ *Cette application a ete ecrite a partir du squelette fourni     *
+ *par l'auteur Patrice Boucher.                                   *
+ *                                                                *
+<<<<<<< .mine
+ *La grande quantite de commentaires sont a tire d'apprentisasage.*                                               
+||||||| .r103
+=======
+ *La grande quantite de commentaires sont present a titre          *
+ *d'apprentisasage.                                               *
+>>>>>>> .r107
+ *                                                                *
+/*******************************************************************
+
+ * @Titre_Classe: DEMARRAGE APPLICATION
+ * 
+<<<<<<< .mine
+ * @Résumer:
+ * Représente l'application dans son ensemble.
+ * On cree une nouvelle Base de Communication avec des listeners 
+ * et une nouvelle fenetre, qui est celle l'application. 
+||||||| .r103
+=======
+ * @Resumer:
+ * Represente l'application dans son ensemble.
+ * On cree une nouvelle Base de Communication avec des listeners 
+ * et une nouvelle fenetre, qui est celle l'application. 
+>>>>>>> .r107
+ * 
+ * @Auteur: Alexandre Laroche et Tomy Nguyen
+ * @Date: 10 juin 2017 
+ *******************************************************************/
+public class ApplicationFormes{
+
+	public static void main(String[] args) {
+		
+		//Dï¿½marrage d'une nouvelle application 
+		ApplicationFormes application = new ApplicationFormes();
+		
+	}
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public ApplicationFormes(){
+		
+<<<<<<< .mine
+		//Demarre un nouveau processus de communication
+||||||| .r103
+=======
+		//Dï¿½marre un nouveau processus de communication
+>>>>>>> .r107
+		CommBase comm = new CommBase();
+
+<<<<<<< .mine
+		//Démarre une nouvelle fenetre d'affichage
+||||||| .r103
+=======
+		//Dï¿½marre une nouvelle fenï¿½tre d'affichage
+>>>>>>> .r107
+		FenetrePrincipale fenetre = new FenetrePrincipale(comm);
+				
+<<<<<<< .mine
+		//Interruption connexion si la fenetre principale est ferme
+||||||| .r103
+=======
+		//Interruption connexion si la fenï¿½tre principale est fermï¿½
+>>>>>>> .r107
+		comm.setPropertyChangeListener(fenetre);
+		
+<<<<<<< .mine
+		//Permet d'envoyer un message si on ferme la fenetre principale
+||||||| .r103
+=======
+		//Permet d'envoyer un message si on ferme la fenï¿½tre principale
+>>>>>>> .r107
+		fenetre.addWindowListener(comm); 
+
+	}
+}

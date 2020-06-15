@@ -1,0 +1,80 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME RECTANGLE
+ * 
+ * @Résumer:
+ * Création d'un objet graphique de type rectangle 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public class FormeRectangle extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int x1, y1, x2, y2;
+	private String nomForme;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeRectangle(int nsec, String nomForme, int x1, int y1, int x2, int y2){
+
+		//Numéro de séquence de la forme
+		super(nsec, nomForme);
+
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+	}
+
+	public double espaceForme() {
+
+		double espaceForme = Math.sqrt(((x1-x2) ^ 2) + ((y1-y2) ^ 2));
+
+		return espaceForme;
+	}
+
+	public double aireForme() {
+
+		double aireForme = Math.abs((x1 - x2) * (y1 - y2));
+		
+		return aireForme;
+	}
+
+	/********************
+	 * Graphics 
+	 ********************/
+	@Override
+	public void graphiqueForme(Graphics g){
+
+		Graphics2D rectangle = (Graphics2D) g;
+
+		Rectangle2D contourRectangle = new Rectangle2D.Float( getAddX(), getAddY(),x2 - x1, y2 - y1 );
+
+		float[] dash = { 5F, 5F };
+
+		Stroke dashedStroke = new BasicStroke( 2F, BasicStroke.CAP_SQUARE,
+														BasicStroke.JOIN_MITER, 3F, dash, 0F );
+
+		//Remplissage coloré de la forme
+		rectangle.setColor(Color.ORANGE);
+		rectangle.fill(dashedStroke.createStrokedShape(contourRectangle));
+		
+		rectangle.fillRect(getAddX(), getAddY(),x2 - x1,y2 - y1);
+		//rectangle.fillRect(x1, y1, (x2 - x1), (y2 - y1));
+
+		//Contour noir aide à identifier une forme qui emboite une autre.
+//		rectangle.setColor(Color.BLACK);
+//		rectangle.drawRect(x1, y1, (x2 - x1), (y2 - y1));
+	}
+}

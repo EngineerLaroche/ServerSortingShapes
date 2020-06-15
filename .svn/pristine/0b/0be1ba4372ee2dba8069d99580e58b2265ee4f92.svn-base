@@ -1,0 +1,8 @@
+
+public class AlgorithmeTriSequence extends AbstraitMecanismesTri{
+
+	public AlgorithmeTriSequence(Noeud noeud, String ordreTri, Noeud suivantForme, Noeud echangeForme){
+		
+		super(noeud, ordreTri);
+	}
+}

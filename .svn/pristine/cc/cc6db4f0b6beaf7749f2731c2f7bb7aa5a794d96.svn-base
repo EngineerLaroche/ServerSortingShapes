@@ -1,0 +1,66 @@
+/******************************************************************
+ *																  * 
+ *@Institution: �cole de Technologies Sup�rieur					  *
+ *															      *
+ ******************************************************************															  
+ *																  *
+ *@Evaluation:  	Travail pratique 02							  *
+ *@Source_Fichier:  Squelette-lab1-jdk1p6.zip					  *
+ *																  *
+ *@Pour: 			Mr. Dallaire Cote 							  *
+ *																  *
+ *@Auteur: 			Alexandre Laroche							  *
+ *@Email: 			alexandre.laroche.1@ens.etsmtl.ca			  *
+ *@Code_Acces: 		AM30750										  *
+ *																  *
+ *@Cours:			LOG121-03									  *
+ *@Date: 			04 juin 2017								  *
+ *																  *
+ *																  *			
+ *@Notes: 														  *
+ *Cette application a ete ecrite a partir du squelette fourni     *
+ *par l'auteur Patrice Boucher.                                   *
+ *                                                                *
+ *La grande quantite de commentaires sont present a titre          *
+ *d'apprentisasage.                                               *
+ *                                                                *
+/*******************************************************************
+
+ * @Titre_Classe: DEMARRAGE APPLICATION
+ * 
+ * @Resumer:
+ * Represente l'application dans son ensemble.
+ * On cree une nouvelle Base de Communication avec des listeners 
+ * et une nouvelle fenetre, qui est celle l'application. 
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 08 mai 2017 
+ *******************************************************************/
+public class ApplicationFormes{
+
+	public static void main(String[] args) {
+		
+		//D�marrage d'une nouvelle application 
+		ApplicationFormes application = new ApplicationFormes();
+		
+	}
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public ApplicationFormes(){
+		
+		//D�marre un nouveau processus de communication
+		CommBase comm = new CommBase();
+
+		//D�marre une nouvelle fen�tre d'affichage
+		FenetrePrincipale fenetre = new FenetrePrincipale(comm);
+				
+		//Interruption connexion si la fen�tre principale est ferm�
+		comm.setPropertyChangeListener(fenetre);
+		
+		//Permet d'envoyer un message si on ferme la fen�tre principale
+		fenetre.addWindowListener(comm); 
+
+	}
+}

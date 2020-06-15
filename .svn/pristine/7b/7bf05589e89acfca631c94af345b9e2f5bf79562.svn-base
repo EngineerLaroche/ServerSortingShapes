@@ -1,0 +1,26 @@
+import java.awt.Graphics;
+
+/*******************************************************************
+ * @Titre: INTERFACE FORME
+ * 
+ * @Résumer:
+ * La classe InterfaceForme est conçue de façon à être minimaliste. 
+ * 
+ * 
+ * Pour l'instant, on retrouve seulement une méthode qui permet d'associer
+ * une couleur à une forme.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public interface InterfaceFormes {
+
+	//Objet graphique (forme)
+	public abstract void graphiqueForme(Graphics g);
+
+	//Représente l'aire d'une forme
+	public abstract double aireForme( );
+
+	//L'espace (zone) que prend une forme
+	public abstract double espaceForme();
+}

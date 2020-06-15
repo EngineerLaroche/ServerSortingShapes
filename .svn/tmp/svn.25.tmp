@@ -1,0 +1,209 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/*******************************************************************
+ * @Titre_Classe: COMMUNICATION SERVEUR
+ * 
+ * @Resumer: 
+ * Processus de validation et de creation du socket TCP (connexion).
+ * Utilisation des classes PrintWriter et BufferedReader pour 
+ * capturer ou envoyer les requetes  au serveur formes.
+ * 
+ * 
+ * @Auteur: Alexandre Laroche et Tomy Nguyen
+ * @Date: 	25 juin 2017 
+ *******************************************************************/ 
+public class CommunicationServeur{
+
+	/***************************
+	 * Classes instanciees
+	 ***************************/
+
+	private Socket socketTCP;
+	private PrintWriter serviceOut;
+	private BufferedReader serviceIn;
+	private CommBase commBase;
+
+	/********************
+	 * Constantes
+	 ********************/ 
+	
+	//Les messages au serveur 
+	private static final String 
+	PRINT_GET = "GET",
+	PRINT_END = "END",
+	PRINT_EMPTY = "commande";
+
+	/********************
+	 * Constructeur
+	 ********************/ 
+	public CommunicationServeur(){
+
+		socketTCP = null;
+		serviceIn = null;
+		serviceOut = null;
+	}
+
+	/*******************************************************************
+	 * @Titre: CONSTRUCTEUR SOCKET
+	 * 
+	 * @Resumer: 
+	 * Creation du socket TCP (connexion) et utilisation des classes 
+	 * PrintWriter et BufferedReader pour traiter les requetes.
+	 * C'est ici qu'on capture les erreurs d'hote et de numero de port.
+	 * 
+	 * @Source:
+	 * Socket: 			https://docs.oracle.com/javase/tutorial/networking/sockets/readingWriting.html 
+	 * Buffered Reader: https://stackoverflow.com/questions/6328125/java-reading-from-a-buffered-reader-from-a-socket-is-pausing-the-thread
+	 * PrintWriter: 	https://stackoverflow.com/questions/12306708/printwriter-in-java-socket-program
+	 * 
+	 *******************************************************************/ 
+	public CommunicationServeur(String nomHote, int numeroPort) { 
+
+		try{
+
+			//Creation d'un nouveau socket a partir du nom d'hote et du numero de port donne
+			socketTCP = new Socket(nomHote, numeroPort);	
+
+			//Nouvelle ecriture de caractere a partir du flux tamponne (socket).
+			serviceOut = new PrintWriter(socketTCP.getOutputStream(), true);
+
+			//Nouvelle lecture de caracteres a partir du flux tamponne (socket).
+			serviceIn = new BufferedReader(new InputStreamReader(socketTCP.getInputStream()));
+
+		}
+		//Attrape les problemes associes a l'hote. 
+		catch (UnknownHostException e) {
+
+			System.out.println("\n*****************************\nERREUR NOM HOTE\n*****************************");
+			System.out.println("Hete " + nomHote + ". Code erreur: " + e + "\n");
+
+		}
+		//Attrape les problemes associes au service TCP.
+		catch (IOException e) {
+
+			System.out.println("\n*****************************\nERREUR PORT TCP/IP\n*****************************");
+			System.out.println("Socket TCP " + socketTCP + ". \nCode erreur: " + e + "\n");
+		}
+	}
+
+	/******************************************************************************************************************
+	 * @Titre: REQUETE FORME
+	 * 
+	 * @Resumer:
+	 * Processus qui permet la requete d'une forme au serveur. 
+	 * Si l'utilisateur decide d'activer une connexion, la commande "GET" est envoye au serveur.
+	 * On s'assure d'offrir un processus de type Continue pour permettre l'affichage des formes en boucle.
+	 * 
+	 * @Source 
+	 * readLine(): 	https://stackoverflow.com/questions/8560395/how-to-use-readline-method-in-java
+	 * Exception: 	http://www.math.uni-hamburg.de/doc/java/tutorial/networking/sockets/readingWriting.html
+	 *
+	 ******************************************************************************************************************/
+	public String requeteForme() {
+
+		String reponseRequeteForme = null;
+
+		try{
+
+			//Imprime la commande <GET> 
+			serviceOut.println(PRINT_GET);
+
+			//Reagit en fonction de la commande <GET>
+			reponseRequeteForme = serviceIn.readLine();
+
+			//Si l'utilisateur ne selectionne pas d'autres options, on continue
+			if(reponseRequeteForme.contains(PRINT_EMPTY)){ 
+				
+				reponseRequeteForme = serviceIn.readLine();
+			}
+		} 
+		//Attrape les erreurs de la requete "GET" (serveur ferme)
+		catch (IOException e) {
+
+			System.out.println("\n*****************************\nPANNE SERVEUR <GET>\n*****************************");
+			System.out.println("Code erreur: " + e + "\n");
+			
+			redemarrerApplication();
+		}
+
+		//Retourne l'information d'une forme generee par le serveur
+		return reponseRequeteForme;
+	}
+
+	/******************************************************************************************************************
+	 * @Titre: REDEMARRER APPLICATION
+	 * 
+	 * @Resumer:
+	 * Si l'utilisateur ferme le serveur durant l'utilisation de l'application,
+	 * un mesage d'erreur affiche et on redemarre l'application.
+	 * 
+	 ******************************************************************************************************************/
+	public void redemarrerApplication(){
+		
+		FenetreInput fenetreInput = new FenetreInput();
+		
+		//Affiche un message d'erreur concernant le serveur
+		fenetreInput.fenetreErreurConnexion();
+		
+		//Redemarre une nouvelle fenetre (application)
+		ApplicationFormes application = new ApplicationFormes();
+		
+		//On s'assure que le communication est ferme.
+		commBase.stop();
+	}
+
+	/******************************************************************************************************************
+	 * @Titre: REQUETE ARRET
+	 * 
+	 * @Resumer:
+	 * Processus qui permet l'arret des requetes de formes vers le serveur. 
+	 * Si l'utilisateur decide d'arreter le connexion, la commande "END" est envoye au serveur.
+	 * 
+	 * @Source 
+	 * readLine(): 	https://stackoverflow.com/questions/8560395/how-to-use-readline-method-in-java
+	 * Exception: 	http://www.math.uni-hamburg.de/doc/java/tutorial/networking/sockets/readingWriting.html
+	 *
+	 ******************************************************************************************************************/
+	public String requeteArret() {		
+
+		String reponseRequeteArret = null;
+
+		try{
+
+			//Imprime la commande <END>
+			serviceOut.println(PRINT_END);
+
+			//Reagit en fonction la commande <END>
+			reponseRequeteArret = serviceIn.readLine();
+
+			System.out.println("\nREQUETE ARRET CONNEXION");
+
+		}
+		//Attrape les erreurs de la requete "END"
+		catch(IOException e){	
+
+			System.out.println("\n*****************************\nPANNE SERVEUR <END>\n*****************************");
+			System.out.println("Code erreur: " + e + "\n");
+		}
+
+		return reponseRequeteArret;
+	}
+
+	/**********************************************************
+	 * @Titre: GET SOCKET
+	 * 
+	 * @Resumer:
+	 * Retourne socketTCP pour aider e identifier les problemes
+	 * de connexions.
+	 *
+	 **********************************************************/
+	public Socket getSocketTCP(){
+
+		return socketTCP;
+	}
+}

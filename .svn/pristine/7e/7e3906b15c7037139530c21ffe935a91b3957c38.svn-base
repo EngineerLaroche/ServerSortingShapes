@@ -1,0 +1,60 @@
+
+public abstract class AbstraitMecanismesTri extends ListeChaine{
+
+	//////SECTION TEST (POUR MIEU GERER LES TYPES DE TRI
+	
+	private Noeud noeud;
+	private String ordreTri;
+	private FenetreFormes fenetreFormes;
+	
+	FormesAbstraites formesAbstraites, formesSuivantes;;
+	
+	private static final String CROISSANT = "Croissant";
+	private static final int MAX_FORMES = 9;
+	
+	public AbstraitMecanismesTri(){
+		
+		noeud = null;
+		ordreTri = null;
+		formesAbstraites = formesSuivantes = null;
+	}
+	
+	public AbstraitMecanismesTri(Noeud noeud, String ordreTri){
+
+		this.noeud = noeud;
+		this.ordreTri = ordreTri;
+	}
+	
+	public String getOrdreTri(){
+		
+		return ordreTri;
+	}	
+	
+	public int getMaxFormes(){
+		
+		return MAX_FORMES;
+	}
+	
+	public String getCroissant(){
+		
+		return CROISSANT;
+	}
+	
+	//Temporaire
+	public Noeud getChaine(FormesAbstraites formes, Noeud noeud){
+
+		return null;
+	}
+	
+	//...
+//	public Noeud getNoeud(){
+//		
+//		return noeud;
+//	}
+//	
+//	//...
+//	public void setNoeud(Noeud noeud){
+//		
+//		this.noeud = noeud;
+//	}
+}

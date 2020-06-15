@@ -1,0 +1,103 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME LIGNE
+ * 
+ * @R�sumer:
+ * Cr�ation d'un objet graphique de type ligne 2D. 
+ * On identifie la forme � l'aide d'un remplissage color�.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017 
+ *******************************************************************/
+public class FormeLigne extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int x_1, y_1;
+
+	private int deltaX, deltaY, deltaInverseX, deltaInverseY;
+	
+	private static final int NUMEROTRI = 5;
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeLigne(int nseq, String nomForme, int x1, int y1, int positionX, int positionY){
+
+		//Num�ro de s�quence et nom de la forme
+		super(nseq, nomForme, positionY, positionY, NUMEROTRI);
+
+		this.x_1 = x1;
+		this.y_1 = y1;
+
+		deltaX = (getPositionX() - x_1);
+		deltaY = (getPositionY() - y_1);
+		deltaInverseX = (x_1 - getPositionX());
+		deltaInverseY = (y_1 - getPositionY());
+	}
+
+	/********************
+	 * Aire de la Forme
+	 ********************/
+	public double aireForme() {
+
+		double espaceForme = Math.sqrt(Math.abs((deltaX ^ 2) + (deltaY ^ 2)));
+		double espaceFormeInverse = Math.sqrt((deltaInverseX ^ 2) + (deltaInverseY ^ 2));
+
+		//A retravailler...Parfois aire = NAN
+		if(espaceForme < espaceFormeInverse){
+
+			return espaceFormeInverse;
+		}
+		else{
+
+		
+			return  espaceForme;
+		}
+	}
+
+	/********************
+	 * Espace Totale
+	 ********************/
+	public double distanceForme() {
+
+		double espaceForme = Math.sqrt((deltaX ^ 2) + (deltaY ^ 2));
+
+		return  espaceForme;
+	}
+
+	/*******************************************************************
+	 * @Titre: GRAPHIQUE LIGNE
+	 * 
+	 * @R�sumer:
+	 * Cr�ation d'un objet ligne muni d'un couleure avec effet de transparance.
+	 * On y retrouve ensuite un rectangle pointill� autour de la forme.
+	 * 
+	 * @Source:
+	 * Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * Transparance: 	http://www.java2s.com/Code/Java/2D-Graphics-GUI/Drawcanvaswithcolorandtext.htm
+	 *
+	 *******************************************************************/
+	@Override
+	public void graphiqueForme(Graphics g) {
+
+		//Cr�ation d'un objet graphique de type ligne
+		Graphics2D ligne = (Graphics2D) g;
+
+		//Cr�ation d'un rectangle autour des dimensions maximale de la forme
+		Rectangle2D contourRectangle = new Rectangle2D.Float(getPositionX() - 1, getPositionY() - 1, deltaInverseX + 2, deltaInverseY + 2);
+
+		//Obtenir un cadrage pointill� autour de la forme
+		ligne.setColor(Color.GRAY);
+		ligne.fill(getStroke().createStrokedShape(contourRectangle));
+
+		//Remplissage color� de la forme
+		ligne.setColor(Color.BLACK); 
+		ligne.drawLine(getPositionX(), getPositionY(), x_1, y_1);
+	}
+}

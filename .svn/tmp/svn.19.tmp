@@ -1,0 +1,343 @@
+import java.util.ArrayList;
+
+public class DemarrageTri {
+
+	// Ordre de tri
+	private static final String CROISSANT = "Croissant", DECROISSANT = "Decroissant";
+
+	private static final String SEQ_CROISSANT = "Numero_Sequence_C", SEQ_DECROISSANT = "Numero_Sequence _D",
+			AIRE_CROISSANT = "Aire _Forme_C", AIRE_DECROISSANT = "Aire _Forme_D", FORME_CROISSANT = "Type_Forme_C",
+			FORME_DERCROISSANT = "Type_Forme_D", ORDRE_DISTANCE = "Distance_Forme_C";
+
+
+	static int numero = 0;
+
+	private static FenetreFormes fenetreFormes;
+
+	public static void trier(ListeChaine<FormesAbstraites> listeFormes, String selectionTri) {
+
+		switch (selectionTri) {
+
+		case SEQ_CROISSANT:
+
+			triSequence(listeFormes, CROISSANT);
+			break;
+
+		case SEQ_DECROISSANT:
+
+			triSequence(listeFormes, DECROISSANT);
+			break;
+
+		case AIRE_CROISSANT:
+
+			triAire(listeFormes, CROISSANT);
+			break;
+
+		case AIRE_DECROISSANT:
+
+			triAire(listeFormes, DECROISSANT);
+			break;
+
+		case FORME_CROISSANT:
+
+			triForme(listeFormes, CROISSANT);
+			break;
+
+		case FORME_DERCROISSANT:
+
+			triForme(listeFormes, DECROISSANT);
+			break;
+
+		case ORDRE_DISTANCE:
+
+			triDistance(listeFormes, CROISSANT);
+			break;
+		}
+
+	}
+
+	private static void triAire(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI AIRE Trier directement la liste
+		 */
+
+	}
+
+	private static void triDistance(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI DISTANCE
+		 */
+	}
+
+	private static void triForme(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		boolean trouve = false;
+		int elementsTrie = 0;
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+			for (int i = 1; i < liste.getSize(); i++) {
+				for (int j = elementsTrie; j >= 0; j--) {
+					if (liste.getElement(i).getNumeroTri() > liste.getElement(j).getNumeroTri()) {
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j+1);
+						trouve = true;
+					}
+				}
+				if (!trouve) {
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterDebut(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		} else if (ordreTri.equals(DECROISSANT)) {
+			for (int i = 1; i < liste.getSize(); i++) {
+				for (int j = 0; j <= elementsTrie; j++) {
+					int num1 = liste.getElement(i).getNumeroTri();
+					int num2 = liste.getElement(j).getNumeroTri();
+					if (num1 < num2) {
+						noeudTemp = liste.getNoeud(i);
+						liste.enlever(i);
+						liste.ajouter(noeudTemp.getContenu(), j);
+						trouve = true;
+					}
+				}
+				if (!trouve) {
+					noeudTemp = liste.getNoeud(i);
+					liste.enlever(i);
+					liste.ajouterFin(noeudTemp.getContenu());
+				}
+				trouve = false;
+				elementsTrie++;
+			}
+		}
+	}
+
+	private static void triSequence(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		//......
+		liste = new ListeChaine<FormesAbstraites>();
+		
+		Noeud<FormesAbstraites> noeudTemp;
+
+		if (ordreTri.equals(CROISSANT)) {
+
+			for (int i = 0; i < liste.getSize(); i++){
+
+				noeudTemp = new Noeud<FormesAbstraites>(liste.getElement(i).getNumeroSeq());
+				noeudTemp.prochain = liste.premierNoeud;
+				liste.premierNoeud = noeudTemp;
+
+				noeudTemp = liste.premierNoeud;
+
+				
+				if (noeudTemp == null || noeudTemp.prochain == null)
+			          
+					noeudTemp = liste.premierNoeud;
+			     
+			      Noeud<FormesAbstraites> forme = noeudTemp = liste.premierNoeud;
+			      Noeud<FormesAbstraites> formeProchain = noeudTemp = liste.premierNoeud.prochain;
+			     
+			      while ((formeProchain != null) && (formeProchain.prochain != null)){
+			         
+			    	  liste.premierNoeud = liste.premierNoeud.prochain;
+			          formeProchain = (formeProchain.prochain).prochain;
+			      }
+			      formeProchain = liste.premierNoeud.prochain;
+			      liste.premierNoeud.prochain = null;
+
+				
+				
+			      noeudTemp = new Noeud<FormesAbstraites>();
+			      Noeud<FormesAbstraites> head = noeudTemp;
+			      Noeud<FormesAbstraites> premier = head;
+			      
+				      while ((forme != null) && (formeProchain != null)) 
+				      {
+				          if (forme.item <= formeProchain.item) 
+				          {
+				              premier.prochain = forme;
+				              premier = forme;
+				              forme = forme.prochain;
+				          }
+				          else 
+				          {
+				              premier.prochain = formeProchain;
+				              premier = formeProchain;
+				              formeProchain = formeProchain.prochain;
+				          }
+				      }
+				      premier.prochain = (forme == null) ? formeProchain : forme;
+				      
+				      liste.premierNoeud =  head.prochain;
+	
+				fenetreFormes.afficheListeFormes(liste);		
+
+			}
+
+			//liste.display();
+
+			//liste = object;
+
+			//	fenetreFormes.afficheListeFormes(object);
+		}
+		else{
+
+
+
+		}
+	}
+}
+
+
+
+
+
+
+
+//if (ordreTri.equals(CROISSANT)) {
+//
+//	for (int i = 0; i < liste.getSize(); i++){
+//
+//		liste.insert(liste.getElement(i).getNumeroSeq());
+//
+//		liste.append(liste.MergeSort(liste.extractFirst()));
+//
+//		fenetreFormes.afficheListeFormes(liste);		
+//
+//	}
+
+	//liste.display();
+
+	//liste = object;
+
+	//	fenetreFormes.afficheListeFormes(object);
+//}
+
+
+
+
+
+
+
+
+//		while(liste != null){
+//
+//			FormesAbstraites forme = noeudTemp.getContenu();
+//			FormesAbstraites formeSuivante = noeudTemp.getProchain().getContenu();
+//			suivant = liste.getProchain();
+//
+//
+//			if (ordreTri.equals(CROISSANT)) {
+//				
+//				
+//				
+//				for(forme = noeudTemp.getContenu();
+//            			formeSuivante != null; forme = noeudTemp.getProchain().getContenu())
+//            		
+//					if (forme.getNumeroSeq() > formeSuivante.getNumeroSeq()){            			           			
+//            			
+//						echange = new Noeud(formeSuivante,suivant);
+//            	       
+//						suivant = new Noeud(forme,noeudTemp);   
+//            	       
+//						noeudTemp = echange;            	        
+//            	        }       
+
+//				for (int i = 1; i < liste.getSize(); i++) {
+//
+//					for (int j = elementsTrie; j >= 0; j--) {
+//
+//						liste.getElement(i);
+//						liste.getElement(j);
+//
+//						if (forme.getNumeroSeq() > formeSuivante.getNumeroSeq()) {
+//							
+//							noeudTemp = liste.getNoeud(i);
+//							liste.enlever(i);
+//							liste.ajouter(noeudTemp.getContenu(), j+1);
+//							trouve = true;
+//						}
+//					}
+//					if (!trouve) {
+//						noeudTemp = liste.getNoeud(i);
+//
+//						liste.enlever(i);
+//						liste.ajouterDebut(noeudTemp.getContenu());
+//					}
+//					trouve = false;
+//					elementsTrie++;
+//				}
+//			} else{
+//				
+//				for(forme = noeudTemp.getContenu(); formeSuivante != null; forme = noeudTemp.getProchain().getContenu()) 
+//            		
+//					if (forme.getNumeroSeq() < formeSuivante.getNumeroSeq()){
+//            			
+//						echange = new Noeud(forme,noeudTemp);
+//            	       
+//						noeudTemp = new Noeud(formeSuivante,suivant);   
+//            	       
+//						suivant = echange; 
+//            	        }          	
+//				for (int i = 1; i < liste.getSize(); i++) {
+//
+//					for (int j = 0; j <= elementsTrie; j++) {
+//
+//						liste.getElement(i);
+//						liste.getElement(j);
+//						
+//						int num1 = forme.getNumeroSeq();
+//						int num2 = formeSuivante.getNumeroSeq();
+//
+//						if (num1 < num2) {
+//							
+//							noeudTemp = liste.getNoeud(i);
+//							liste.enlever(i);
+//							liste.ajouter(noeudTemp.getContenu(), j);
+//							trouve = true;
+//						}
+//					}
+//					if (!trouve) {
+//						noeudTemp = liste.getNoeud(i);
+//						liste.enlever(i);
+//						liste.ajouterFin(noeudTemp.getContenu());
+//					}
+//					trouve = false;
+//					elementsTrie++;
+//				}
+//			}
+//		}
+//
+//		LinkedList object = new LinkedList();
+//
+//		if (ordreTri.equals(CROISSANT)) {
+//			
+//				integer.add(formes.getNumeroSeq());
+//				
+//		
+//			for (int i = 0; i < integer.size(); i++){
+//				
+//			//	liste.ajouterFin(formes.getNumeroSeq());
+//				
+//				object.insert(integer.get(i));
+//
+//				object.append(object.MergeSort(object.extractFirst()));
+//				
+//		//		if(node.getItem() == formes.getNumeroSeq()){	
+//
+//			}
+//			
+//			object.display();
+
+
+
+//
+//			
+
+//	}

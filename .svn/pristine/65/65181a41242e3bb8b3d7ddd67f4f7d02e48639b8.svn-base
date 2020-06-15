@@ -1,0 +1,45 @@
+/******************************************************
+
+@Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+
+ *******************************************************/
+
+public class Noeud<E> {
+
+	private E contenu;
+	private Noeud<E> prochain;
+
+	public Noeud(){
+
+		prochain = null;
+	}
+
+	public Noeud(E contenu) {
+
+		this.contenu = contenu;
+		prochain = null;
+	}
+
+	public Noeud(E contenu, Noeud<E> prochain) {
+
+		this.contenu = contenu;
+		this.prochain = prochain;
+	}
+
+	public E getContenu() {
+
+		return contenu;
+	}
+
+	public void setContenu(E contenu) {
+		this.contenu = contenu;
+	}
+
+	public Noeud getProchain() {
+		return prochain;
+	}
+
+	public void setProchain(Noeud<E> prochain) {
+		this.prochain = prochain;
+	}
+}

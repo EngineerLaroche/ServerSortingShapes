@@ -1,0 +1,97 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME CARRÉ
+ * 
+ * @Résumer:
+ * Création d'un objet graphique de type carré 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+
+public class FormeCarre extends FormesAbstraites{
+	
+	/********************
+	 * Variables
+	 ********************/
+	private int x1, y1, x2, y2;
+	private String nomForme;
+	
+	private int deltaX = (x2 - x1);
+	private int deltaY = (y2 - y1);
+	
+	private static Color ROUGE = new Color(255, 0, 0, 150);
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeCarre(int nseq, String nomForme, int x1, int x2, int y1, int y2){
+		
+		//Numéro de séquence et nom de la forme
+		super(nseq, nomForme);
+		
+		this.x1 = x1;
+		this.x2 = x2;
+		this.y1 = y1;
+		this.y2 = y2;
+	}
+	
+	/********************
+	 * Aire de la Forme
+	 ********************/
+	public double aireForme() {
+		
+		double aireForme = Math.abs((deltaX) * (deltaY));
+		
+		return aireForme;
+	}
+	
+	/********************
+	 * Espace Totale
+	 ********************/
+	public double distanceForme() {
+		
+		double distance = Math.sqrt(((deltaX) ^ 2) + ((deltaY) ^ 2));
+		
+		return distance;
+	}
+
+	/*******************************************************************
+	 * @Titre: GRAPHIQUE CARRE
+	 * 
+	 * @Résumer:
+	 * Création d'un objet carré muni d'un couleure avec effet de transparance.
+	 * On y retrouve ensuite un rectangle pointillé autour de la forme.
+	 * 
+	 * @Source:
+	 * Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * Transparance: 	http://www.java2s.com/Code/Java/2D-Graphics-GUI/Drawcanvaswithcolorandtext.htm
+	 *
+	 *******************************************************************/
+	@Override
+	public void graphiqueForme(Graphics g){
+		
+		//Création d'un objet graphique de type Carré
+		Graphics2D carre = (Graphics2D) g;
+		
+		//Création d'un rectangle autour des dimensions maximale de la forme
+		Rectangle2D contourRectangle = new Rectangle2D.Float(getValeurX(), getValeurY(), deltaX, deltaY);
+	
+		//Obtenir un cadrage pointillé autour de la forme
+		carre.setColor(Color.GRAY);
+		carre.fill(getStroke().createStrokedShape(contourRectangle));
+		
+		//Remplissage coloré avec une transparance 
+		carre.setColor(ROUGE);
+		carre.fillRect(getValeurX(), getValeurY(), (deltaX), (deltaY));
+
+		//Contour coloré de la forme
+		carre.setColor(Color.RED);
+		carre.drawRect(getValeurX(), getValeurY(), (deltaX), (deltaY));
+	}
+}

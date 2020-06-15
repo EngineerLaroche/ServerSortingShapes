@@ -1,0 +1,11 @@
+
+public abstract class AbstraitMecanismesTri implements InterfaceMecanismesTri{
+
+	//////SECTION TEST (POUR MIEU GERER LES TYPES DE TRI
+	
+	
+	public AbstraitMecanismesTri(){
+
+		
+	}
+}

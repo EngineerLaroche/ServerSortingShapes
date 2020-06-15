@@ -1,0 +1,7 @@
+
+public class AlgorithmeTriSequence {
+
+	public AlgorithmeTriSequence(Maillon premierNoeud, String ordreTri){
+		
+	}
+}

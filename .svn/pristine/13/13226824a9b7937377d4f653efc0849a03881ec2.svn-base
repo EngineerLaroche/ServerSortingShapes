@@ -1,0 +1,14 @@
+
+public interface InterfaceMecanismesTri {
+
+	//////SECTION TEST (POUR MIEU GERER LES TYPES DE TRI
+	
+	public abstract void formeAbstraites(AbstraitesFormes formesAbstraites);
+	
+	public abstract void maillonForme(Maillon mayon);
+	
+	public abstract void listeForme(Noeud E);
+	
+	//public abstract Maillon maillon(FormesAbstraites checknext, Maillon suivant);
+	
+}

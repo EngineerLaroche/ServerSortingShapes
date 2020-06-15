@@ -1,0 +1,103 @@
+import java.awt.BasicStroke;
+import java.awt.Stroke;
+
+import ca.etsmtl.log.util.IDLogger;
+
+/*******************************************************************
+ * @Titre: FORMES ABSTRAITES
+ * 
+ * @Résumer:
+ * La classe abstraite est conçue de façon à être minimaliste. 
+ * L'idée est de permettre l'ajout d'options dans le cas où l'évolution 
+ * du Travail_Pratique_01 prend une tournure différente.
+ * 
+ * Pour l'instant, on retrouve seulement une variable qui garde en 
+ * mémoire le numéro de séquence associé à une forme. 
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017
+ *******************************************************************/
+public abstract class FormesAbstraites implements InterfaceFormes{
+
+	//Numéro de séquence d'une forme
+	protected int numeroSeq;
+	protected String nomForme;
+
+	private int positionX = 0;
+	private int positionY = 0;
+
+	//Méthode statique qui permet l'ajout d'un numéro de séquence au Journal
+	IDLogger logger = IDLogger.getInstance();
+
+	/********************
+	 * Constructeurs
+	 ********************/
+	public FormesAbstraites(int nseq, String nomForme, int positionX, int positionY){
+
+		this.numeroSeq = nseq;
+		this.nomForme = nomForme;
+		this.positionX = positionX;
+		this.positionY = positionY;
+
+		//Utilisé pour la validation 
+		logger.logID(nseq);
+	}
+
+	/*******************************************************************
+	 * @Titre: GET STROKE
+	 * 
+	 * @Résumer:
+	 * On donne les paramètres à la classe Stroke pour obtenir une ligne
+	 * pointillée qui sera utilisé pour former un cadrage autour de la forme.
+	 * On retourne le type de ligne pointillée.
+	 * 
+	 * @Source: 
+	 * Stroke Line: https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * 
+	 *******************************************************************/
+	public Stroke getStroke(){
+
+		float[] pointiller = { 5F, 5F };
+
+		//Paramètre pour créer la ligne de contour pointiller voulu
+		Stroke stroke = new BasicStroke( 2F, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 3F, pointiller, 0F );
+
+		return stroke;
+	}
+
+	public int getNumeroSeq() {
+		
+		return numeroSeq;
+	}
+
+	public String getNomForme() {
+	
+		return nomForme;
+	}
+
+	public int getPositionX() {
+		
+		return positionX;
+	}
+
+	public int getPositionY() {
+	
+		return positionY;
+	}
+
+	public void deplacementForme(){
+
+		this.positionX = positionX + 40;
+		this.positionY = positionY + 40;
+	}
+	
+	public void setPositionX(int valeurX) {
+	
+		this.positionX = valeurX;
+}
+	
+	public void setPositionY(int valeurY) {
+	
+		this.positionY = valeurY;
+}
+}

@@ -1,0 +1,86 @@
+public class DemarrageTri {
+
+	// Ordre de tri
+	private static final String CROISSANT = "Croissant", DECROISSANT = "Decroissant";
+
+	private static final String SEQ_CROISSANT = "Numero_Sequence_C", 
+								SEQ_DECROISSANT = "Numero_Sequence _D",
+								AIRE_CROISSANT = "Aire _Forme_C", 
+								AIRE_DECROISSANT = "Aire _Forme_D", 
+								FORME_CROISSANT = "Type_Forme_C",
+								FORME_DERCROISSANT = "Type_Forme_D", 
+								ORDRE_DISTANCE = "Distance_Forme_C";
+
+	public static void trier(ListeChaine<FormesAbstraites> listeFormes, String selectionTri) {
+
+		switch (selectionTri) {
+
+		case SEQ_CROISSANT:
+			
+			triSequence(listeFormes, CROISSANT);
+			break;
+
+		case SEQ_DECROISSANT:
+
+			triSequence(listeFormes, DECROISSANT);
+			break;
+
+		case AIRE_CROISSANT:
+
+			triAire(listeFormes, CROISSANT);
+			break;
+
+		case AIRE_DECROISSANT:
+
+			triAire(listeFormes, DECROISSANT);
+			break;
+
+		case FORME_CROISSANT:
+
+			triForme(listeFormes, CROISSANT);
+			break;
+
+		case FORME_DERCROISSANT:
+
+			triForme(listeFormes, DECROISSANT);
+			break;
+
+		case ORDRE_DISTANCE:
+
+			triDistance(listeFormes, CROISSANT);
+			break;
+		}
+
+	}
+
+	private static void triAire(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI AIRE
+		 * Trier directement la liste
+		 */
+
+	}
+
+	private static void triDistance(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI DISTANCE
+		 */
+	}
+
+	private static void triForme(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI FORME
+		 */
+	}
+
+	private static void triSequence(ListeChaine<FormesAbstraites> liste, String ordreTri) {
+
+		/*
+		 * TODO CODE TRI SEQUENCE
+		 */
+	}
+
+}

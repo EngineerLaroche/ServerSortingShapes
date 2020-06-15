@@ -1,0 +1,65 @@
+
+public class DemarrageTri {
+
+	private static TypeTri typeTri;
+
+	//Ordre de tri
+	public static final int CROISSANT = 0;
+	public static final int DECROISSANT = 1;	
+
+
+	public DemarrageTri(){
+
+		typeTri = new TypeTri();
+	}
+
+	private static void tri(ListeChaine listeChaine, String selectionTri){
+
+		int ordreTri;
+		
+		switch(selectionTri) { 
+
+		case "Numéro séquence C" : 
+
+			ordreTri = CROISSANT;
+			typeTri.triSequence(listeChaine);
+			break;
+
+		case "Numéro séquence D" :
+
+			ordreTri = DECROISSANT;
+			typeTri.triSequence(listeChaine);
+			break;				
+
+		case "Aire forme C" :
+			ordreTri = CROISSANT;
+			typeTri.triAire(listeChaine);
+			break;
+
+		case "Aire forme D" :
+
+			ordreTri = DECROISSANT;
+			typeTri.triAire(listeChaine);
+			break;
+
+		case "Type forme C" :
+
+			ordreTri = CROISSANT;
+			typeTri.triType(listeChaine);
+			break;
+
+		case "Type forme D" :
+
+			ordreTri = DECROISSANT;
+			typeTri.triType(listeChaine);
+			break;
+
+		case "Distance forme C" :
+
+			ordreTri = CROISSANT;
+			typeTri.triDistance(listeChaine);
+			break;
+
+		}
+	}
+}

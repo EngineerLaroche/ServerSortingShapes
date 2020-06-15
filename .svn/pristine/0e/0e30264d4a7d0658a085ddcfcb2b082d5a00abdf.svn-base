@@ -1,0 +1,95 @@
+
+public class AlgorithmeTriForme {
+	
+	private Maillon 
+	maillon,
+	suivant, 
+	xEchange = null;
+	
+	private FormesAbstraites formesAbstraites;
+	private FormesAbstraites formesSuivantes;
+
+	public AlgorithmeTriForme(Maillon premierNoeud, String ordreTri){
+
+		maillon = premierNoeud;
+		suivant = xEchange = null;		
+
+		while(maillon.getProchain() != null){
+			
+			formesAbstraites = maillon.getForme(); 
+			formesSuivantes = maillon.getProchain().getForme();
+			suivant = premierNoeud.getProchain();
+
+			if(ordreTri.equals("Croissant")){
+
+				// chercher la place du noeud dans la liste 	
+				for(formesAbstraites = maillon.getForme();
+
+						formesSuivantes == null;
+						formesAbstraites = maillon.getProchain().getForme());       			
+
+					if (formesSuivantes.getNom() == "CARRE"){            			           			
+
+						repitionTri(); 
+
+						if(formesSuivantes.getNom() == "RECTANGLE" && formesAbstraites.getNom() != "CARRE"){
+
+							repitionTri();
+
+							if(formesSuivantes.getNom() == "CERCLE" && 
+									(formesAbstraites.getNom() != "CARRE" || formesAbstraites.getNom() !="RECTANGLE")){
+
+								repitionTri();
+
+								if(formesSuivantes.getNom() == "OVALE" && 
+										(formesAbstraites.getNom() != "CARRE" || 
+														formesAbstraites.getNom() != "RECTANGLE" || formesAbstraites.getNom() != "CERCLE")){
+
+									repitionTri();                     	        
+								}
+							}
+						}
+
+					}                		
+
+			} else {
+
+				if (formesSuivantes.getNom() =="LIGNE"){            			           			
+
+					repitionTri();
+
+					if(formesSuivantes.getNom() =="OVALE" && formesAbstraites.getNom() != "LIGNE"){
+
+						repitionTri();
+
+						if(formesSuivantes.getNom() =="CERCLE" && 
+								(formesAbstraites.getNom() != "LIGNE" || formesAbstraites.getNom() !="OVALE")){
+
+							repitionTri();
+
+							if(formesSuivantes.getNom() =="RECTANGLE" && 
+									(formesAbstraites.getNom() != "LIGNE" || 
+													formesAbstraites.getNom() !="OVALE" || formesAbstraites.getNom() !="CERCLE")){
+
+								repitionTri(); 
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void repitionTri(){
+		
+		xEchange = maillon(formesSuivantes,suivant);
+		suivant = maillon(formesAbstraites,maillon);   
+		maillon = xEchange; 
+		
+	}
+
+	private Maillon maillon(FormesAbstraites formesSuivantes, Maillon suivant) {
+		// TODO Auto-generated method stub
+		return null;
+	} 	
+}

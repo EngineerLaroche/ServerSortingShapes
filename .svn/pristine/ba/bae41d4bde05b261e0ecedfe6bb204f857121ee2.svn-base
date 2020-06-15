@@ -1,0 +1,92 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+
+/*******************************************************************
+ * @Titre: FORME LIGNE
+ * 
+ * @Résumer:
+ * Création d'un objet graphique de type ligne 2D. 
+ * On identifie la forme à l'aide d'un remplissage coloré.
+ * 
+ * @Auteur: Alexandre Laroche
+ * @Date: 15 mai 2017 
+ *******************************************************************/
+public class FormeLigne extends FormesAbstraites{
+
+	/********************
+	 * Variables
+	 ********************/
+	private int x1, y1, x2, y2;
+	private String nomForme;
+	
+	private int deltaX = (x2 - x1);
+	private int deltaY = (y2 - y1);
+
+	/********************
+	 * Constructeur
+	 ********************/
+	public FormeLigne(int nseq, String nomForme, int x1, int y1, int x2, int y2){
+
+		//Numéro de séquence et nom de la forme
+		super(nseq, nomForme);
+
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+	}
+
+	/********************
+	 * Aire de la Forme
+	 ********************/
+	public double aireForme() {
+
+		double espaceForme = espaceForme();
+
+		return espaceForme;
+	}
+
+	/********************
+	 * Espace Totale
+	 ********************/
+	public double espaceForme() {
+
+		double espaceForme = Math.sqrt(((deltaX) ^ 2) + ((deltaY) ^ 2));
+
+		return  espaceForme;
+	}
+
+	/*******************************************************************
+	 * @Titre: GRAPHIQUE LIGNE
+	 * 
+	 * @Résumer:
+	 * Création d'un objet ligne muni d'un couleure avec effet de transparance.
+	 * On y retrouve ensuite un rectangle pointillé autour de la forme.
+	 * 
+	 * @Source:
+	 * Stroke Line: 	https://docstore.mik.ua/orelly/java-ent/jfc/ch04_05.htm
+	 * Transparance: 	http://www.java2s.com/Code/Java/2D-Graphics-GUI/Drawcanvaswithcolorandtext.htm
+	 *
+	 *******************************************************************/
+	@Override
+	public void graphiqueForme(Graphics g) {
+
+		//Création d'un objet graphique de type ligne
+		Graphics2D ligne = (Graphics2D) g;
+	
+		//Création d'un rectangle autour des dimensions maximale de la forme
+		Rectangle2D contourRectangle = new Rectangle2D.Float( getValeurX(), getValeurY(), deltaX, deltaY);
+		
+		//Obtenir un cadrage pointillé autour de la forme
+		ligne.setColor(Color.GRAY);
+		ligne.fill(getStroke().createStrokedShape(contourRectangle));
+
+		//Remplissage coloré de la forme
+		ligne.setColor(Color.BLACK); 
+		ligne.drawLine(getValeurX(), getValeurY(), x2, y2);
+	}
+}

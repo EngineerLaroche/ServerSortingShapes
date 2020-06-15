@@ -1,0 +1,136 @@
+
+//Tomy Nguyen
+//Source: http://pages.cs.wisc.edu/~vernon/cs367/notes/4.LINKED-LIST.html
+public class ListeChaine<E> {
+
+	private FormesAbstraites formesAbstraites;
+
+	private ListeChaine listeChaine;
+	
+	//Non fini !! Mais presque....
+	private int size = 0;
+	
+	private Noeud<E> 
+	premierNoeud,
+	insererNoeud,
+	suivantNoeud,
+	actuelNoeud,
+	dernierNoeud;
+
+	private int nombreFormes;
+
+	public ListeChaine() {
+
+		premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = null;
+
+		nombreFormes++;
+	}
+
+	public void ajouterDebut(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+			premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = new Noeud<E>(nouveauObjet, null);
+
+		} else {
+
+			premierNoeud = new Noeud<E>(nouveauObjet, premierNoeud);
+			
+			actuelNoeud = premierNoeud;
+		}
+<<<<<<< .mine
+||||||| .r37
+=======
+		size++;
+	}
+	
+	public void ajouterDebut(E nouveauObjet) {
+>>>>>>> .r64
+		
+		nombreFormes++;
+	}
+
+	public void ajouterFin(E nouveauObjet) {
+
+		if (premierNoeud == null) {
+<<<<<<< .mine
+
+			premierNoeud = insererNoeud = actuelNoeud = dernierNoeud = new Noeud<E>(nouveauObjet, null);
+			//dernierNoeud = premierNoeud;
+||||||| .r37
+=======
+			premierNoeud = new Noeud<E>(nouveauObjet);
+			dernierNoeud = premierNoeud;
+			
+>>>>>>> .r64
+		} else {
+
+			dernierNoeud.setProchain(new Noeud<E>(nouveauObjet));
+			dernierNoeud = dernierNoeud.getProchain();
+		}
+		size++;
+	}
+
+	public void enlever(int index) {
+
+<<<<<<< .mine
+		Noeud<E> noeudPrec = premierNoeud;
+		Noeud<E> noeudEnleve;
+
+		noeudPrec = getNoeud(index-1);
+||||||| .r37
+=======
+		if (premierNoeud == dernierNoeud) {
+			premierNoeud = null;
+			dernierNoeud = null;
+		} else {
+			Noeud<E> noeudPrec = getNoeud(index - 1);
+			Noeud<E> noeudEnleve = getNoeud(index);
+			
+			if (noeudEnleve == dernierNoeud) {
+				dernierNoeud = noeudPrec;
+			}
+			
+			if (noeudEnleve == premierNoeud) {
+				premierNoeud = noeudEnleve.getProchain();
+			} else {
+				noeudPrec.setProchain(noeudEnleve.getProchain());
+			}
+		}
+>>>>>>> .r64
+
+		size--;
+	}
+
+	public E getElement(int index) {
+
+		Noeud<E> noeud = getNoeud(index);
+		return noeud.getContenu();
+	}
+
+	public Noeud<E> getNoeud(int index) {
+
+		Noeud<E> noeud = premierNoeud;
+
+		for (int i = 0; i < index; i++) {
+			noeud = noeud.getProchain();
+		}
+		return noeud;
+	}
+
+	public int getSize() {
+		return size;
+	}
+	
+	//TEST !!!
+
+
+//	public FormesAbstraites getForme() { //formes plantes quand encap dans le tri
+//		return formesAbstraites;
+//	}
+//
+//	public ListeChaine getProchain() {
+//		return listeChaine;
+//	}
+
+
+}
