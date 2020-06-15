@@ -12,7 +12,7 @@ Les formes sont remplies et donc, n'affichent que leurs contours. Une couleur un
 ## Utilisation
 
 1- Double-cliquer sur ServeurForme.jar situé dans le projet.<br />
-2- Double-cliquer sur 'ApplicationCLient.jar' ou démarrer à partir de 'ApplicationFormes.java' situé dans le code source du projet.<br />
+2- Démarrer à partir de 'ApplicationFormes.java' situé dans le code source du projet dans le package 'Vue'.<br />
 3- Une fois l'application client ouvert, sélectionnez 'Ordre' pour choisir le type de tri de formes.<br />
 4- Dans l'application, sélectionnez 'Fichier' puis 'Obtenir Formes'. 
 
